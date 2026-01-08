@@ -1,12 +1,9 @@
 {
   description = "A collection of flake modules for various purposes.";
 
-  outputs = inputs:
-    let
-      lib = inputs.nixpkgs.lib;
-      imports = lib.filter (n: lib.strings.hasSuffix ".nix" n) (lib.filesystem.listFilesRecursive ./modules);
-    in
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } { inherit imports; };
+  outputs = inputs: with inputs.nixpkgs.lib; with inputs.flake-parts.lib;
+    let imports = filter (n: strings.hasSuffix ".nix" n) (filesystem.listFilesRecursive ./modules);
+    in mkFlake { inherit inputs; } { inherit imports; };
 
   inputs = {
     flake-parts.url = "https://flakehub.com/f/hercules-ci/flake-parts/0";

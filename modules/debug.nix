@@ -1,3 +1,9 @@
+let
+  module = {
+    debug = true;
+  };
+in
 {
-  debug = true;
+  imports = [ module ];
+  flake.modules.flake.default = module;
 }

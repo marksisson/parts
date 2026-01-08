@@ -1,13 +1,20 @@
-{
-  partitions.development.module = { inputs, ... }: {
+let
+  module =
+    {
+      partitions.development.module = {
 
-    perSystem = { config, pkgs, ... }: {
-      develop.default = {
-        packages = [
-          pkgs.just
-        ];
+        perSystem = { pkgs, ... }: {
+          develop.default = {
+            packages = [
+              pkgs.just
+            ];
+          };
+        };
+
       };
     };
-
-  };
+in
+{
+  imports = [ module ];
+  flake.modules.flake.default = module;
 }

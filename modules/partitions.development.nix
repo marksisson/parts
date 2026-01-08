@@ -1,18 +1,26 @@
-{ inputs, lib, ... }:
+{ lib, ... }:
 let
-  partition = "development";
+  module =
+    { inputs, ... }:
+    let
+      partition = "development";
+    in
+    {
+      partitionedAttrs =
+        lib.genAttrs
+          [ "checks" "devShells" "formatter" ]
+          (_: partition);
+
+      partitions.${partition} =
+        if inputs ? flake then {
+          extraInputsFlake =
+            "github:marksisson/flake/${inputs.flake.rev}?dir=flakes/${partition}";
+        } else {
+          extraInputsFlake = ../flakes/${partition};
+        };
+    };
 in
 {
-  partitionedAttrs =
-    lib.genAttrs
-      [ "checks" "devShells" "formatter" ]
-      (_: partition);
-
-  partitions.${partition} =
-    if inputs ? base then {
-      extraInputsFlake =
-        "github:marksisson/base/${inputs.base.rev}?dir=flakes/${partition}";
-    } else {
-      extraInputsFlake = ../flakes/${partition};
-    };
+  imports = [ module ];
+  flake.modules.flake.default = module;
 }

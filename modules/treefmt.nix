@@ -1,20 +1,27 @@
-{
-  partitions.development.module = { inputs, ... }: {
+let
+  module =
+    {
+      partitions.development.module = { inputs, ... }: {
 
-    imports = [ inputs.treefmt.flakeModule ];
+        imports = [ inputs.treefmt.flakeModule ];
 
-    perSystem = { config, pkgs, ... }: {
-      treefmt = {
-        projectRootFile = "flake.nix";
-        package = pkgs.treefmt;
-        programs = {
-          nixpkgs-fmt.enable = true;
-          shfmt.enable = true;
+        perSystem = { config, pkgs, ... }: {
+          treefmt = {
+            projectRootFile = "flake.nix";
+            package = pkgs.treefmt;
+            programs = {
+              nixpkgs-fmt.enable = true;
+              shfmt.enable = true;
+            };
+          };
+
+          develop.default.packages = with config.treefmt; builtins.attrValues build.programs;
         };
+
       };
-
-      develop.default.packages = with config.treefmt; builtins.attrValues build.programs;
     };
-
-  };
+in
+{
+  imports = [ module ];
+  flake.modules.flake.default = module;
 }

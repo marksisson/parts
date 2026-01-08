@@ -1,29 +1,37 @@
-{ lib, self, ... }: {
+{ lib, ... }:
+let
+  module =
+    { self, ... }: {
 
-  partitions.development.module = {
+      partitions.development.module = {
 
-    perSystem = { config, pkgs, ... }:
-      let
-        flakeRoot = builtins.path { path = self; };
+        perSystem = { pkgs, ... }:
+          let
+            flakeRoot = builtins.path { path = self; };
 
-        recipe = pkgs.writeShellScriptBin "recipe" ''
-          ${lib.getExe pkgs.just} --working-directory . --justfile ${flakeRoot}/justfile $(basename $0) "$@"
-        '';
+            recipe = pkgs.writeShellScriptBin "recipe" ''
+              ${lib.getExe pkgs.just} --working-directory . --justfile ${flakeRoot}/justfile $(basename $0) "$@"
+            '';
 
-        justified = pkgs.runCommand "justified"
+            justified = pkgs.runCommand "justified"
+              {
+                src = flakeRoot;
+                buildInputs = with pkgs; [ coreutils findutils gawk just ];
+              } ''
+              mkdir -p $out/bin
+              just --summary --justfile $src/justfile | xargs -n1 | awk -F: '{print $1}' | uniq | while read -r name; do
+                ln -s ${lib.getExe recipe} $out/bin/$name
+              done
+            '';
+          in
           {
-            src = flakeRoot;
-            buildInputs = with pkgs; [ coreutils findutils gawk just ];
-          } ''
-          mkdir -p $out/bin
-          just --summary --justfile $src/justfile | xargs -n1 | awk -F: '{print $1}' | uniq | while read -r name; do
-            ln -s ${lib.getExe recipe} $out/bin/$name
-          done
-        '';
-      in
-      {
-        develop.default.packages = [ justified ];
-      };
+            develop.default.packages = [ justified ];
+          };
 
-  };
+      };
+    };
+in
+{
+  imports = [ module ];
+  flake.modules.flake.default = module;
 }

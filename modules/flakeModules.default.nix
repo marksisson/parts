@@ -1,13 +1,11 @@
 { config, lib, ... }:
 let
-  # make all the modules available except for flakeModules
-  imports = lib.filter
-    (path:
-      lib.strings.hasSuffix ".nix" path
-      && !lib.strings.hasPrefix "flakeModules" (baseNameOf path)
-    )
-    (lib.filesystem.listFilesRecursive ./.);
+  module =
+    {
+      flake.flakeModules.default = config.flake.modules.flake.default;
+    };
 in
 {
-  flake.flakeModules.default = { inherit imports; };
+  imports = [ module ];
+  flake.modules.flake.flake = module;
 }
