@@ -1,18 +1,31 @@
 let
-  module =
+  moduleWithOptionalPartitionedAttr =
+    partitionedAttr: moduleConfig:
+
+    { config, lib, ... }:
+    let
+      isPartitioned = config.partitionedAttrs ? ${partitionedAttr};
+      partition = config.partitionedAttrs.${partitionedAttr} or null;
+    in
     {
-      partitions.development.module = {
+      config = lib.mkMerge [
+        (lib.mkIf isPartitioned {
+          partitions.${partition}.module = moduleConfig;
+        })
 
-        perSystem = { pkgs, ... }: {
-          develop.default = {
-            packages = [
-              pkgs.just
-            ];
-          };
+        (lib.mkIf (!isPartitioned) moduleConfig)
+      ];
+    };
+
+  module =
+    moduleWithOptionalPartitionedAttr "devShells" {
+      perSystem = { pkgs, ... }: {
+        develop.default = {
+          packages = [ pkgs.just ];
         };
-
       };
     };
+
 in
 {
   imports = [ module ];
