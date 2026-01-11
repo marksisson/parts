@@ -5,17 +5,17 @@
   outputs = { ... }: { };
 
   inputs = {
-    main.url = "path:../..";
+    flake.url = "path:../..";
 
     # dev tools
     git-hooks = {
       url = "https://flakehub.com/f/cachix/git-hooks.nix/0";
-      inputs.nixpkgs.follows = "main/nixpkgs";
+      inputs.nixpkgs.follows = "flake/nixpkgs";
     };
 
     treefmt = {
       url = "https://flakehub.com/f/numtide/treefmt-nix/0";
-      inputs.nixpkgs.follows = "main/nixpkgs";
+      inputs.nixpkgs.follows = "flake/nixpkgs";
     };
   };
 }
