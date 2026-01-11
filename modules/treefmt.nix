@@ -1,28 +1,32 @@
-{ lib, ... }:
+local@{ config, ... }:
 let
-  module =
-    {
-      partitions.development.module = { inputs, options, ... }: {
+  # Get extra inputs from the development partition
+  inputs = config.partitions.development.extraInputs;
 
-        imports = [ inputs.treefmt.flakeModule ];
+  flakeModule = { options, ... }: {
+    imports = [ inputs.treefmt.flakeModule ];
 
-        perSystem = { config, pkgs, ... }: {
-          treefmt = {
-            projectRootFile = "flake.nix";
-            package = pkgs.treefmt;
-            programs = {
-              nixpkgs-fmt.enable = true;
-              shfmt.enable = true;
-            };
-          };
-        } // lib.optionalAttrs (options ? develop) {
-          develop.default.packages = with config.treefmt; builtins.attrValues build.programs;
+    perSystem = { config, lib, pkgs, ... }: {
+      treefmt = {
+        projectRootFile = "flake.nix";
+        package = pkgs.treefmt;
+        programs = {
+          nixpkgs-fmt.enable = true;
+          shfmt.enable = true;
         };
-
       };
+    } // lib.optionalAttrs (options ? develop) {
+      develop.default.packages = with config.treefmt; builtins.attrValues build.programs;
     };
+  };
+
+  partitionedModule = {
+    partitions.development.module = flakeModule;
+  };
 in
 {
-  imports = [ module ];
-  flake.modules.flake.default = module;
+  # import locally (dogfooding)
+  imports = [ partitionedModule ];
+  # export via flakeModules
+  flake.modules.flake.fmt = flakeModule;
 }

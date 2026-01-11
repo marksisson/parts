@@ -1,9 +1,11 @@
 let
-  module = {
+  flakeModule = {
     debug = true;
   };
 in
 {
-  imports = [ module ];
-  flake.modules.flake.default = module;
+  # import locally (dogfooding)
+  imports = [ flakeModule ];
+  # export via flakeModules
+  flake.modules.flake.debug = flakeModule;
 }

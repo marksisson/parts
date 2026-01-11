@@ -1,11 +1,13 @@
-{ inputs, ... }:
+local@{ inputs, ... }:
 let
-  module =
+  flakeModule =
     {
       imports = [ inputs.flake-parts.flakeModules.modules ];
     };
 in
 {
-  imports = [ module ];
-  flake.modules.flake.default = module;
+  # import locally (dogfooding)
+  imports = [ flakeModule ];
+  # export via flakeModules
+  flake.modules.flake.modules = flakeModule;
 }
