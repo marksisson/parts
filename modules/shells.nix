@@ -2,6 +2,12 @@ let
   flakeModule = { flake-parts-lib, lib, ... }: {
     options =
       let
+        inputsFrom = lib.mkOption {
+          type = lib.types.listOf lib.types.package;
+          default = [ ];
+          description = "List of packages whose inputs will be included in the development shell.";
+        };
+
         packages = lib.mkOption {
           type = lib.types.listOf lib.types.package;
           default = [ ];
@@ -14,31 +20,36 @@ let
           description = "Shell hook script to run when entering the development shell.";
         };
 
-        develop = lib.mkOption {
+        shells = lib.mkOption {
           type = lib.types.lazyAttrsOf (lib.types.submodule ({ name, ... }: {
             options = {
-              inherit packages shellHook;
+              name = lib.mkOption {
+                type = lib.types.str;
+                default = name;
+                description = "Name of the development shell.";
+              };
+              inherit inputsFrom packages shellHook;
             };
           }));
           default = { };
-          description = "Development shell configuration.";
+          description = "Development shell configurations.";
         };
       in
       {
         perSystem = flake-parts-lib.mkPerSystemOption {
-          _file = ./modules.develop.nix;
+          _file = ./shells.nix;
 
-          options = { inherit develop; };
+          options = { inherit shells; };
         };
       };
 
     config = {
       perSystem = { config, pkgs, ... }: {
         devShells = lib.mapAttrs
-          (name: develop: pkgs.mkShell {
-            inherit (develop) packages shellHook;
+          (name: shell: pkgs.mkShell {
+            inherit (shell) inputsFrom name packages shellHook;
           })
-          config.develop;
+          config.shells;
       };
     };
   };
@@ -47,5 +58,5 @@ in
   # import locally (dogfooding)
   imports = [ flakeModule ];
   # export via flakeModules
-  flake.modules.flake.develop = flakeModule;
+  flake.modules.flake.shells = flakeModule;
 }

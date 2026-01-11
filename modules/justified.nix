@@ -19,8 +19,8 @@ let
           done
         '';
       in
-      { } // lib.optionalAttrs (options ? develop) {
-        develop.default.packages = [ justified ];
+      { } // lib.optionalAttrs (options ? shells) {
+        shells.default.packages = [ justified ];
       };
   };
 in

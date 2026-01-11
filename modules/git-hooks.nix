@@ -12,10 +12,10 @@ let
           treefmt.enable = true;
           treefmt.package = config.treefmt.build.wrapper;
         };
-      } // lib.optionalAttrs (options ? develop) {
-        develop.default.packages = with config.pre-commit; settings.enabledPackages;
+      } // lib.optionalAttrs (options ? shells) {
+        shells.default.packages = with config.pre-commit; settings.enabledPackages;
 
-        develop.default.shellHook = ''
+        shells.default.shellHook = ''
           ${with config.pre-commit; shellHook}
         '';
       };

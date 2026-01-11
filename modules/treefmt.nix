@@ -15,8 +15,8 @@ let
           shfmt.enable = true;
         };
       };
-    } // lib.optionalAttrs (options ? develop) {
-      develop.default.packages = with config.treefmt; builtins.attrValues build.programs;
+    } // lib.optionalAttrs (options ? shells) {
+      shells.default.packages = with config.treefmt; builtins.attrValues build.programs;
     };
   };
 

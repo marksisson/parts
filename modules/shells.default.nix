@@ -1,6 +1,6 @@
 {
   perSystem = { pkgs, ... }: {
-    develop.default = {
+    shells.default = {
       packages = [ pkgs.just ];
     };
   };
