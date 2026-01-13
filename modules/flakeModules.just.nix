@@ -1,6 +1,7 @@
+{ config, ... }:
 let
-  flakeModule = { options, self, ... }: {
-    perSystem = { config, lib, pkgs, ... }:
+  localModule = { self, ... }: {
+    perSystem = { lib, pkgs, ... }:
       let
         flakeRoot = builtins.path { path = self; };
 
@@ -8,7 +9,7 @@ let
           ${lib.getExe pkgs.just} --working-directory . --justfile ${flakeRoot}/justfile $(basename $0) "$@"
         '';
 
-        justified = pkgs.runCommand "justified"
+        just-aliases = pkgs.runCommand "just-aliases"
           {
             src = flakeRoot;
             buildInputs = with pkgs; [ coreutils findutils gawk just ];
@@ -20,13 +21,17 @@ let
         '';
       in
       {
-        shells.default.packages = [ justified ];
+        shells.default.packages = [ pkgs.just just-aliases ];
       };
   };
+
+  flakeModule = { self, ... }: {
+    imports = [ config.flake.modules.flake.shells ];
+  } // localModule { inherit self; };
 in
 {
   # import locally (dogfooding)
-  imports = [ flakeModule ];
+  imports = [ localModule ];
   # export via flakeModules
-  flake.modules.flake.justified = flakeModule;
+  flake.modules.flake.just = flakeModule;
 }

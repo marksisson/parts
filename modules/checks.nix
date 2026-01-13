@@ -8,7 +8,7 @@ let
 
     perSystem =
       let
-        _file = ./checks.nix;
+        _file = __curPos.file;
       in
       { config, lib, options, pkgs, system, ... }: {
         inherit _file;

@@ -5,7 +5,7 @@ let
 
   flakeModule = { options, ... }:
     let
-      _file = ./formatter.nix;
+      _file = __curPos.file;
     in
     {
       imports = [ inputs.treefmt.flakeModule ];

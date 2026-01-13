@@ -1,7 +1,7 @@
 let
   flakeModule = { flake-parts-lib, lib, ... }:
     let
-      _file = ./shells.nix;
+      _file = __curPos.file;
     in
     {
       options =
@@ -42,7 +42,6 @@ let
         {
           perSystem = flake-parts-lib.mkPerSystemOption {
             inherit _file;
-
             key = _file;
 
             options = { inherit shells; };
@@ -52,7 +51,6 @@ let
       config = {
         perSystem = { config, pkgs, system, ... }: {
           inherit _file;
-
           key = _file + system;
 
           devShells = lib.mapAttrs
