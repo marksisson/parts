@@ -9,5 +9,5 @@ in
   # import locally (dogfooding)
   imports = [ flakeModule ];
   # export via flakeModules
-  flake.modules.flake.flake = flakeModule;
+  flake.modules.flake.systems = flakeModule;
 }
