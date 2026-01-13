@@ -8,6 +8,6 @@
     systems.url = "github:nix-systems/default";
   };
 
-  outputs = inputs: with import ./lib inputs.nixpkgs.lib inputs.flake-parts.lib;
+  outputs = inputs: with import ./lib inputs;
     mkFlake { inherit inputs; } { imports = modulesIn ./modules; };
 }
