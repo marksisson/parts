@@ -6,13 +6,14 @@ let
   flakeModule = { options, ... }:
     let
       _file = ./checks.nix;
-      key = _file;
     in
     {
       imports = [ inputs.git-hooks.flakeModule ];
 
-      perSystem = { config, lib, ... }: {
-        inherit _file key;
+      perSystem = { config, lib, system, ... }: {
+        inherit _file;
+
+        key = _file + system;
 
         pre-commit.settings.hooks = {
           treefmt.enable = true;

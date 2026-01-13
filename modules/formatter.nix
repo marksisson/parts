@@ -6,13 +6,14 @@ let
   flakeModule = { options, ... }:
     let
       _file = ./formatter.nix;
-      key = _file;
     in
     {
       imports = [ inputs.treefmt.flakeModule ];
 
-      perSystem = { config, lib, pkgs, ... }: {
-        inherit _file key;
+      perSystem = { config, lib, pkgs, system, ... }: {
+        inherit _file;
+
+        key = _file + system;
 
         treefmt = {
           projectRootFile = "flake.nix";
