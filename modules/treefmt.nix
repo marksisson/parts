@@ -28,5 +28,5 @@ in
   # import locally (dogfooding)
   imports = [ partitionedModule ];
   # export via flakeModules
-  flake.modules.flake.fmt = flakeModule;
+  flake.modules.flake.formatter = flakeModule;
 }

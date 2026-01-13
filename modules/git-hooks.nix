@@ -30,5 +30,5 @@ in
   # import locally (dogfooding)
   imports = [ partitionedModule ];
   # export via flakeModules
-  flake.modules.flake.hooks = flakeModule;
+  flake.modules.flake.shells = flakeModule;
 }
