@@ -4,6 +4,10 @@ let
   inputs = config.partitions.development.extraInputs;
 
   flakeModule = { options, ... }: {
+    _file = ./formatter.nix;
+
+    key = _file;
+
     imports = [ inputs.treefmt.flakeModule ];
 
     perSystem = { config, lib, pkgs, ... }: {

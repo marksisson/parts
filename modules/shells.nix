@@ -1,5 +1,9 @@
 let
   flakeModule = { flake-parts-lib, lib, ... }: {
+    _file = ./shells.nix;
+
+    key = _file;
+
     options =
       let
         inputsFrom = lib.mkOption {
