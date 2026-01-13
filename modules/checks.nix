@@ -3,26 +3,16 @@ let
   # Get extra inputs from the development partition
   inputs = config.partitions.development.extraInputs;
 
-  flakeModule = { options, ... }:
-    let
-      _file = ./checks.nix;
-    in
-    {
-      imports = [ inputs.git-hooks.flakeModule ];
+  flakeModule = { options, ... }: {
+    imports = [ inputs.git-hooks.flakeModule ];
 
-      perSystem = { config, lib, pkgs, system, ... }: {
+    perSystem =
+      let
+        _file = ./checks.nix;
+      in
+      { config, lib, pkgs, system, ... }: {
         inherit _file;
-
         key = _file + system;
-
-        pre-commit.settings.hooks = {
-          treefmt.enable = true;
-          treefmt.packageOverrides.treefmt = pkgs.treefmt;
-          treefmt.settings.formatters = [ pkgs.shfmt ];
-          #treefmt.packageOverrides.treefmt = lib.mkIf (config ? treefmt) config.treefmt.build.wrapper;
-          #treefmt.packageOverrides.treefmt = config.treefmt.build.wrapper;
-          #treefmt.package = config.treefmt.build.wrapper;
-        };
       } // lib.optionalAttrs (options ? shells) {
         shells.default.packages = with config.pre-commit; settings.enabledPackages;
 
@@ -30,7 +20,7 @@ let
           ${with config.pre-commit; shellHook}
         '';
       };
-    };
+  };
 
   partitionedModule = {
     partitions.development.module = flakeModule;
