@@ -3,26 +3,29 @@ let
   # Get extra inputs from the development partition
   inputs = config.partitions.development.extraInputs;
 
-  flakeModule = { options, ... }: {
-    _file = ./formatter.nix;
+  flakeModule = { options, ... }:
+    let
+      _file = ./formatter.nix;
+      key = _file;
+    in
+    {
+      imports = [ inputs.treefmt.flakeModule ];
 
-    key = _file;
+      perSystem = { config, lib, pkgs, ... }: {
+        inherit _file key;
 
-    imports = [ inputs.treefmt.flakeModule ];
-
-    perSystem = { config, lib, pkgs, ... }: {
-      treefmt = {
-        projectRootFile = "flake.nix";
-        package = pkgs.treefmt;
-        programs = {
-          nixpkgs-fmt.enable = true;
-          shfmt.enable = true;
+        treefmt = {
+          projectRootFile = "flake.nix";
+          package = pkgs.treefmt;
+          programs = {
+            nixpkgs-fmt.enable = true;
+            shfmt.enable = true;
+          };
         };
+      } // lib.optionalAttrs (options ? shells) {
+        shells.default.packages = with config.treefmt; builtins.attrValues build.programs;
       };
-    } // lib.optionalAttrs (options ? shells) {
-      shells.default.packages = with config.treefmt; builtins.attrValues build.programs;
     };
-  };
 
   partitionedModule = {
     partitions.development.module = flakeModule;

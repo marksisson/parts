@@ -3,11 +3,17 @@ let
   # Get extra inputs from the development partition
   inputs = config.partitions.development.extraInputs;
 
-  flakeModule = { options, ... }: {
-    imports = [ inputs.git-hooks.flakeModule ];
+  flakeModule = { options, ... }:
+    let
+      _file = ./checks.nix;
+      key = _file;
+    in
+    {
+      imports = [ inputs.git-hooks.flakeModule ];
 
-    config = {
       perSystem = { config, lib, ... }: {
+        inherit _file key;
+
         pre-commit.settings.hooks = {
           treefmt.enable = true;
           treefmt.package = config.treefmt.build.wrapper;
@@ -20,7 +26,6 @@ let
         '';
       };
     };
-  };
 
   partitionedModule = {
     partitions.development.module = flakeModule;
