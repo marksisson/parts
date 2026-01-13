@@ -3,17 +3,17 @@ let
   # Get extra inputs from the development partition
   inputs = config.partitions.development.extraInputs;
 
-  flakeModule = { options, ... }: {
+  flakeModule = {
     imports = [ inputs.git-hooks.flakeModule ];
 
     perSystem =
       let
         _file = ./checks.nix;
       in
-      { config, lib, pkgs, system, ... }: {
+      { config, lib, options, pkgs, system, ... }: {
         inherit _file;
         key = _file + system;
-      } // lib.optionalAttrs (options ? shells) {
+
         shells.default.packages = with config.pre-commit; settings.enabledPackages;
 
         shells.default.shellHook = ''

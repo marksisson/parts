@@ -1,7 +1,5 @@
 {
   perSystem = { pkgs, ... }: {
-    shells.default = {
-      packages = [ pkgs.just ];
-    };
+    shells.default.packages = [ pkgs.just ];
   };
 }

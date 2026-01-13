@@ -12,7 +12,6 @@ let
 
       perSystem = { config, lib, pkgs, system, ... }: {
         inherit _file;
-
         key = _file + system;
 
         treefmt = {
@@ -23,9 +22,10 @@ let
             shfmt.enable = true;
           };
         };
-      } // lib.optionalAttrs (options ? shells) {
+
         shells.default.packages = with config.treefmt; builtins.attrValues build.programs;
       };
+
     };
 
   partitionedModule = {

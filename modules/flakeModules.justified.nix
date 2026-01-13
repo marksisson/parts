@@ -1,6 +1,6 @@
 let
   flakeModule = { options, self, ... }: {
-    perSystem = { lib, pkgs, ... }:
+    perSystem = { config, lib, pkgs, ... }:
       let
         flakeRoot = builtins.path { path = self; };
 
@@ -19,7 +19,7 @@ let
           done
         '';
       in
-      { } // lib.optionalAttrs (options ? shells) {
+      {
         shells.default.packages = [ justified ];
       };
   };
