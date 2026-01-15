@@ -15,9 +15,14 @@ let
             buildInputs = with pkgs; [ coreutils findutils gawk just ];
           } ''
           mkdir -p $out/bin
-          just --summary --justfile $src/justfile | xargs -n1 | awk -F: '{print $1}' | uniq | while read -r name; do
-            ln -s ${lib.getExe recipe} $out/bin/$name
-          done
+          touch $out/bin/.placeholder # in case no just recipes, ensure output still exists for this derivation
+          if [ -f $src/justfile ]; then
+            just --summary --justfile $src/justfile | xargs -n1 | awk -F: '{print $1}' | uniq | while read -r name; do
+              ln -s ${lib.getExe recipe} $out/bin/$name
+            done
+          else
+            echo "No justfile found in $src"
+          fi
         '';
       in
       {
