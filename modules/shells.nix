@@ -1,52 +1,66 @@
+{ inputs, ... }:
 let
   flakeModule = { flake-parts-lib, lib, ... }:
     let
       _file = __curPos.file;
     in
     {
-      options =
-        let
-          inputsFrom = lib.mkOption {
-            type = lib.types.listOf lib.types.package;
-            default = [ ];
-            description = "List of packages whose inputs will be included in the development shell.";
-          };
+      options = {
+        perSystem = flake-parts-lib.mkPerSystemOption ({ pkgs, ... }: with lib; with types;
+          let
+            inputsFrom = mkOption {
+              type = listOf package;
+              default = [ ];
+              description = "List of packages whose inputs will be included in the development shell.";
+            };
 
-          packages = lib.mkOption {
-            type = lib.types.listOf lib.types.package;
-            default = [ ];
-            description = "List of packages to include in development shell.";
-          };
+            mkShellOverrides = mkOption {
+              type = lazyAttrsOf anything;
+              default = { stdenv = pkgs.stdenvNoCC; };
+              description = "Overrides to apply to the development shell.";
+            };
 
-          shellHook = lib.mkOption {
-            type = lib.types.lines;
-            default = "";
-            description = "Shell hook script to run when entering the development shell.";
-          };
+            packages = mkOption {
+              type = listOf package;
+              default = [ ];
+              description = "List of packages to include in development shell.";
+            };
 
-          shells = lib.mkOption {
-            type = lib.types.lazyAttrsOf (lib.types.submodule ({ name, ... }: {
-              options = {
-                name = lib.mkOption {
-                  type = lib.types.str;
-                  default = name;
-                  description = "Name of the development shell.";
+            shellHook = mkOption {
+              type = lines;
+              default = "";
+              description = "Shell hook script to run when entering the development shell.";
+            };
+
+            stdenv = mkOption {
+              type = package;
+              # pkgs.pkgsLLVM.llvmPackages_latest.stdenv
+              default = pkgs.stdenv;
+              description = "The stdenv to use for the development shell.";
+            };
+
+            shells = mkOption {
+              type = lazyAttrsOf (submodule ({ name, ... }: {
+                options = {
+                  name = mkOption {
+                    type = str;
+                    default = name;
+                    description = "Name of the development shell.";
+                  };
+                  inherit inputsFrom mkShellOverrides packages shellHook stdenv;
                 };
-                inherit inputsFrom packages shellHook;
-              };
-            }));
-            default = { };
-            description = "Development shell configurations.";
-          };
-        in
-        {
-          perSystem = flake-parts-lib.mkPerSystemOption {
+              }));
+              default = { };
+              description = "Development shell configurations.";
+            };
+          in
+          {
             inherit _file;
             key = _file;
 
             options = { inherit shells; };
-          };
-        };
+          });
+      };
 
       config = {
         perSystem = { config, pkgs, system, ... }: {
@@ -54,8 +68,8 @@ let
           key = _file + system;
 
           devShells = lib.mapAttrs
-            (name: shell: pkgs.mkShell {
-              inherit (shell) inputsFrom name packages shellHook;
+            (name: shell: pkgs.mkShell.override shell.mkShellOverrides {
+              inherit (shell) inputsFrom name packages shellHook stdenv;
             })
             config.shells;
         };

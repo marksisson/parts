@@ -1,4 +1,5 @@
-{ inputs, ... }: let
+{ inputs, ... }:
+let
   flakeModule = { config, lib, ... }:
     let
       cfg = config;
