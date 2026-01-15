@@ -19,7 +19,7 @@ let
           };
 
           shellHook = lib.mkOption {
-            type = lib.types.str;
+            type = lib.types.lines;
             default = "";
             description = "Shell hook script to run when entering the development shell.";
           };
