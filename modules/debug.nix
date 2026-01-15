@@ -1,7 +1,14 @@
 let
-  flakeModule = {
-    debug = true;
-  };
+  flakeModule =
+    let
+      _file = __curPos.file;
+    in
+    {
+      inherit _file;
+      key = _file;
+
+      debug = true;
+    };
 in
 {
   # import locally (dogfooding)

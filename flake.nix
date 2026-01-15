@@ -6,6 +6,8 @@
     nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0";
     nixpkgs-unstable.url = "https://flakehub.com/f/DeterminateSystems/nixpkgs-weekly/0";
     systems.url = "github:nix-systems/default";
+    systems-darwin.url = "github:nix-systems/default-darwin";
+    systems-linux.url = "github:nix-systems/default-darwin";
   };
 
   outputs = inputs: with import ./lib inputs;

@@ -3,24 +3,24 @@ let
   # Get extra inputs from the development partition
   inputs = config.partitions.development.extraInputs;
 
-  flakeModule = {
-    imports = [ inputs.git-hooks.flakeModule ];
+  flakeModule =
+    let
+      _file = __curPos.file;
+    in
+    {
+      inherit _file;
+      key = _file;
 
-    perSystem =
-      let
-        _file = __curPos.file;
-      in
-      { config, lib, options, pkgs, system, ... }: {
-        inherit _file;
-        key = _file + system;
+      imports = [ inputs.git-hooks.flakeModule ];
 
+      perSystem = { config, lib, options, pkgs, system, ... }: {
         shells.default.packages = with config.pre-commit; settings.enabledPackages;
 
         shells.default.shellHook = ''
           ${with config.pre-commit; shellHook}
         '';
       };
-  };
+    };
 
   partitionedModule = {
     partitions.development.module = flakeModule;

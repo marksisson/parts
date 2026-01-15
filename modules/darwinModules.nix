@@ -1,22 +1,29 @@
 let
-  flakeModule = { lib, moduleLocation, ... }: {
-    options = {
-      flake.darwinModules = lib.mkOption {
-        type = lib.types.lazyAttrsOf lib.types.deferredModule;
-        default = { };
-        apply = lib.mapAttrs (k: v: {
-          _class = "darwin";
-          _file = "${toString moduleLocation}#darwinModules.${k}";
-          imports = [ v ];
-        });
-        description = ''
-          Darwin modules.
+  flakeModule = { lib, moduleLocation, ... }:
+    let
+      _file = __curPos.file;
+    in
+    {
+      inherit _file;
+      key = _file;
 
-          You may use this for reusable pieces of configuration, service modules, etc.
-        '';
+      options = {
+        flake.darwinModules = lib.mkOption {
+          type = lib.types.lazyAttrsOf lib.types.deferredModule;
+          default = { };
+          apply = lib.mapAttrs (k: v: {
+            _class = "darwin";
+            _file = "${toString moduleLocation}#darwinModules.${k}";
+            imports = [ v ];
+          });
+          description = ''
+            Darwin modules.
+
+            You may use this for reusable pieces of configuration, service modules, etc.
+          '';
+        };
       };
     };
-  };
 in
 {
   # import locally (dogfooding)

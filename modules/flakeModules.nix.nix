@@ -1,12 +1,19 @@
 { config, ... }: {
-  flake.modules.flake.nix = {
-    imports = [ config.flake.modules.flake.shells ];
+  flake.modules.flake.nix =
+    let
+      _file = __curPos.file;
+    in
+    {
+      inherit _file;
+      key = _file;
 
-    perSystem = { pkgs, ... }: {
-      shells.default.packages = with pkgs; [
-        nil
-        nix-output-monitor
-      ];
+      imports = [ config.flake.modules.flake.shells ];
+
+      perSystem = { pkgs, ... }: {
+        shells.default.packages = with pkgs; [
+          nil
+          nix-output-monitor
+        ];
+      };
     };
-  };
 }

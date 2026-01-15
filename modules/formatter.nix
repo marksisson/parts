@@ -8,15 +8,15 @@ let
       _file = __curPos.file;
     in
     {
+      inherit _file;
+      key = _file;
+
       imports = [
-        config.flake.modules.flake.shells
         inputs.treefmt.flakeModule
+        config.flake.modules.flake.shells
       ];
 
       perSystem = { config, lib, pkgs, system, ... }: {
-        inherit _file;
-        key = _file + system;
-
         treefmt = {
           projectRootFile = "flake.nix";
           package = pkgs.treefmt;

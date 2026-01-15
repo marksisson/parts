@@ -1,11 +1,18 @@
 { config, ... }: {
-  flake.modules.flake.lua = {
-    imports = [ config.flake.modules.flake.shells ];
+  flake.modules.flake.lua =
+    let
+      _file = __curPos.file;
+    in
+    {
+      inherit _file;
+      key = _file;
 
-    perSystem = { pkgs, ... }: {
-      shells.default.packages = with pkgs; [
-        lua5_1
-      ];
+      imports = [ config.flake.modules.flake.shells ];
+
+      perSystem = { pkgs, ... }: {
+        shells.default.packages = with pkgs; [
+          lua5_1
+        ];
+      };
     };
-  };
 }

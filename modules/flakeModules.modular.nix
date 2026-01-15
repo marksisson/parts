@@ -2,6 +2,8 @@
 let
   flakeModule = { config, lib, ... }:
     let
+      _file = __curPos.file;
+
       cfg = config;
 
       # Flattens a tree of components into a single-level attribute set,
@@ -52,6 +54,9 @@ let
           flake-parts-module;
     in
     {
+      inherit _file;
+      key = _file;
+
       imports = [ inputs.flake-parts.flakeModules.modules ];
 
       options.mod =
