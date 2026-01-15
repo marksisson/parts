@@ -8,7 +8,10 @@ let
       _file = __curPos.file;
     in
     {
-      imports = [ inputs.treefmt.flakeModule ];
+      imports = [
+        config.flake.modules.flake.shells
+        inputs.treefmt.flakeModule
+      ];
 
       perSystem = { config, lib, pkgs, system, ... }: {
         inherit _file;
