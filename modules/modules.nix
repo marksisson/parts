@@ -1,4 +1,4 @@
-local@{ inputs, ... }:
+{ inputs, ... }:
 let
   flakeModule =
     {

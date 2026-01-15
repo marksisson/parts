@@ -1,4 +1,4 @@
-local@{ config, ... }:
+{ config, ... }:
 let
   # Get extra inputs from the development partition
   inputs = config.partitions.development.extraInputs;

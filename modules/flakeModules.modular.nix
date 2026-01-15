@@ -1,4 +1,4 @@
-let
+{ inputs, ... }: let
   flakeModule = { config, lib, ... }:
     let
       cfg = config;
@@ -51,6 +51,8 @@ let
           flake-parts-module;
     in
     {
+      imports = [ inputs.flake-parts.flakeModules.modules ];
+
       options.mod =
         let
           data = with lib.types; submoduleWith {
