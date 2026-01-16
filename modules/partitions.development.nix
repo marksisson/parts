@@ -9,7 +9,7 @@ let
       formatter = partition;
     };
 
-    partitions.${partition}.extraInputsFlake = ../flakes/${partition};
+    partitions.${partition}.extraInputsFlake = ../partitions/${partition};
   };
 in
 {
