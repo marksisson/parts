@@ -1,6 +1,6 @@
-{ inputs, ... }:
+local@{ config, inputs, ... }:
 let
-  flakeModule = { config, lib, ... }:
+  localModule = { config, lib, ... }:
     let
       _file = __curPos.file;
 
@@ -56,8 +56,6 @@ let
     {
       inherit _file;
       key = _file;
-
-      imports = [ inputs.flake-parts.flakeModules.modules ];
 
       options.mod =
         let
@@ -220,10 +218,15 @@ let
             lib.attrsets.recursiveUpdate components aggregates;
         };
     };
+
+    flakeModule = args: {
+      imports = [ local.config.flake.modules.flake.modules ];
+    } // localModule args;
+
 in
 {
   # import locally (dogfooding)
-  imports = [ flakeModule ];
+  imports = [ localModule ];
   # export via flakeModules
   flake.modules.flake.modular = flakeModule;
 }
