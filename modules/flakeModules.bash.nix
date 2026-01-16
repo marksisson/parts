@@ -1,22 +1,14 @@
 { config, ... }:
 let
-  flakeModule =
-    let
-      _file = __curPos.file;
-    in
-    {
-      inherit _file;
-      key = _file;
+  flakeModule = let _file = __curPos.file; key = _file; in {
+    inherit _file key;
 
-      imports = [ config.flake.modules.flake.shells ];
+    imports = [ config.flake.modules.flake.shells ];
 
-      perSystem = { pkgs, ... }: {
-        shells.default.packages = with pkgs; [
-          nodePackages.bash-language-server
-          shellcheck
-        ];
-      };
+    perSystem = { pkgs, ... }: with pkgs; {
+      shells.default.packages = [ nodePackages.bash-language-server shellcheck ];
     };
+  };
 in
 {
   flake.modules.flake.bash = flakeModule;

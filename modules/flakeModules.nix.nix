@@ -1,22 +1,14 @@
 { config, ... }:
 let
-  flakeModule =
-    let
-      _file = __curPos.file;
-    in
-    {
-      inherit _file;
-      key = _file;
+  flakeModule = let _file = __curPos.file; key = _file; in {
+    inherit _file key;
 
-      imports = [ config.flake.modules.flake.shells ];
+    imports = [ config.flake.modules.flake.shells ];
 
-      perSystem = { pkgs, ... }: {
-        shells.default.packages = with pkgs; [
-          nil
-          nix-output-monitor
-        ];
-      };
+    perSystem = { pkgs, ... }: with pkgs; {
+      shells.default.packages = [ nil nix-output-monitor ];
     };
+  };
 in
 {
   flake.modules.flake.nix = flakeModule;

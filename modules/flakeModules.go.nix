@@ -1,23 +1,14 @@
 { config, ... }:
 let
-  flakeModule =
-    let
-      _file = __curPos.file;
-    in
-    {
-      inherit _file;
-      key = _file;
+  flakeModule = let _file = __curPos.file; key = _file; in {
+    inherit _file key;
 
-      imports = [ config.flake.modules.flake.shells ];
+    imports = [ config.flake.modules.flake.shells ];
 
-      perSystem = { pkgs, ... }: {
-        shells.default.packages = with pkgs; [
-          go
-          gotools
-          golangci-lint
-        ];
-      };
+    perSystem = { pkgs, ... }: with pkgs; {
+      shells.default.packages = [ go gotools golangci-lint ];
     };
+  };
 in
 {
   flake.modules.flake.go = flakeModule;

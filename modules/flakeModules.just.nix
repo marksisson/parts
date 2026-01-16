@@ -32,19 +32,13 @@ let
     };
 
   flakeModule = args:
-    let
-      _file = __curPos.file;
-    in
-    {
-      inherit _file;
-      key = _file;
+    let _file = __curPos.file; key = _file; in {
+      inherit _file key;
 
       imports = [ config.flake.modules.flake.shells ];
     } // localModule args;
 in
 {
-  # import locally (dogfooding)
   imports = [ localModule ];
-  # export via flakeModules
   flake.modules.flake.just = flakeModule;
 }

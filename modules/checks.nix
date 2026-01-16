@@ -9,30 +9,21 @@ let
     perSystem = { config, lib, options, pkgs, system, ... }: {
       shells.default.packages = with config.pre-commit; settings.enabledPackages;
 
-      shells.default.shellHook = ''
-        ${with config.pre-commit; shellHook}
-      '';
+      shells.default.shellHook = "${with config.pre-commit; shellHook}";
     };
   };
 
-  flakeModule =
-    let
-      _file = __curPos.file;
-    in
-    {
-      inherit _file;
-      key = _file;
+  flakeModule = let _file = __curPos.file; key = _file; in {
+    inherit _file key;
 
-      imports = [ config.flake.modules.flake.shells ];
-    } // localModule;
+    imports = [ config.flake.modules.flake.shells ];
+  } // localModule;
 
   partitionedModule = {
     partitions.development.module = localModule;
   };
 in
 {
-  # import locally (dogfooding)
   imports = [ partitionedModule ];
-  # export via flakeModules
   flake.modules.flake.checks = flakeModule;
 }
