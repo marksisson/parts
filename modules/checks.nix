@@ -11,7 +11,10 @@ let
       inherit _file;
       key = _file;
 
-      imports = [ inputs.git-hooks.flakeModule ];
+      imports = [
+        inputs.git-hooks.flakeModule
+        config.flake.modules.flake.shells
+      ];
 
       perSystem = { config, lib, options, pkgs, system, ... }: {
         shells.default.packages = with config.pre-commit; settings.enabledPackages;
@@ -30,5 +33,5 @@ in
   # import locally (dogfooding)
   imports = [ partitionedModule ];
   # export via flakeModules
-  flake.modules.flake.shells = flakeModule;
+  flake.modules.flake.checks = flakeModule;
 }

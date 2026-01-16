@@ -219,9 +219,9 @@ let
         };
     };
 
-    flakeModule = args: {
-      imports = [ local.config.flake.modules.flake.modules ];
-    } // localModule args;
+  flakeModule = args: {
+    imports = [ local.config.flake.modules.flake.modules ];
+  } // localModule args;
 
 in
 {
