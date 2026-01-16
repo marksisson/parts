@@ -1,15 +1,17 @@
 { inputs, ... }:
 let
   partition = "development";
+
+  localModule = {
+    partitionedAttrs = {
+      checks = partition;
+      devShells = partition;
+      formatter = partition;
+    };
+
+    partitions.${partition}.extraInputsFlake = ../flakes/${partition};
+  };
 in
 {
-  imports = [ inputs.flake-parts.flakeModules.partitions ];
-
-  partitionedAttrs = {
-    checks = partition;
-    devShells = partition;
-    formatter = partition;
-  };
-
-  partitions.${partition}.extraInputsFlake = ../flakes/${partition};
+  imports = [ localModule ];
 }

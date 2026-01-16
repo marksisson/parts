@@ -1,5 +1,6 @@
-{ config, ... }: {
-  flake.modules.flake.go =
+{ config, ... }:
+let
+  flakeModule =
     let
       _file = __curPos.file;
     in
@@ -17,4 +18,7 @@
         ];
       };
     };
+in
+{
+  flake.modules.flake.go = flakeModule;
 }

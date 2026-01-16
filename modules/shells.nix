@@ -1,9 +1,6 @@
 { inputs, ... }:
 let
-  flakeModule = { flake-parts-lib, lib, ... }:
-    let
-      _file = __curPos.file;
-    in
+  localModule = { flake-parts-lib, lib, ... }:
     {
       options = {
         perSystem = flake-parts-lib.mkPerSystemOption ({ pkgs, ... }: with lib; with types;
@@ -55,18 +52,12 @@ let
             };
           in
           {
-            inherit _file;
-            key = _file;
-
             options = { inherit shells; };
           });
       };
 
       config = {
         perSystem = { config, pkgs, system, ... }: {
-          inherit _file;
-          key = _file + system;
-
           devShells = lib.mapAttrs
             (name: shell: pkgs.mkShell.override shell.mkShellOverrides {
               inherit (shell) inputsFrom name packages shellHook stdenv;
@@ -75,10 +66,18 @@ let
         };
       };
     };
+  flakeModule = args:
+    let
+      _file = __curPos.file;
+    in
+    {
+      inherit _file;
+      key = _file;
+    } // localModule args;
 in
 {
   # import locally (dogfooding)
-  imports = [ flakeModule ];
+  imports = [ localModule ];
   # export via flakeModules
   flake.modules.flake.shells = flakeModule;
 }

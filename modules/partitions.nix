@@ -1,5 +1,9 @@
 { inputs, ... }:
 let
+  localModule = {
+    imports = [ inputs.flake-parts.flakeModules.partitions ];
+  };
+
   flakeModule =
     let
       _file = __curPos.file;
@@ -7,13 +11,11 @@ let
     {
       inherit _file;
       key = _file;
-
-      imports = [ inputs.flake-parts.flakeModules.partitions ];
-    };
+    } // localModule;
 in
 {
   # import locally (dogfooding)
-  imports = [ flakeModule ];
+  imports = [ localModule ];
   # export via flakeModules
   flake.modules.flake.partitions = flakeModule;
 }

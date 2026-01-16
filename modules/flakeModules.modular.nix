@@ -1,9 +1,7 @@
-local@{ config, inputs, ... }:
+{ config, inputs, ... }:
 let
   localModule = { config, lib, ... }:
     let
-      _file = __curPos.file;
-
       cfg = config;
 
       # Flattens a tree of components into a single-level attribute set,
@@ -54,9 +52,6 @@ let
           flake-parts-module;
     in
     {
-      inherit _file;
-      key = _file;
-
       options.mod =
         let
           data = with lib.types; submoduleWith {
@@ -219,9 +214,16 @@ let
         };
     };
 
-  flakeModule = args: {
-    imports = [ local.config.flake.modules.flake.modules ];
-  } // localModule args;
+  flakeModule = args:
+    let
+      _file = __curPos.file;
+    in
+    {
+      inherit _file;
+      key = _file;
+
+      imports = [ config.flake.modules.flake.modules ];
+    } // localModule args;
 
 in
 {

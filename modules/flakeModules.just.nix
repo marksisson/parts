@@ -1,13 +1,7 @@
 { config, ... }:
 let
   localModule = { self, ... }:
-    let
-      _file = __curPos.file;
-    in
     {
-      inherit _file;
-      key = _file;
-
       perSystem = { lib, pkgs, ... }:
         let
           flakeRoot = builtins.path { path = self; };
@@ -37,9 +31,16 @@ let
         };
     };
 
-  flakeModule = { self, ... }: {
-    imports = [ config.flake.modules.flake.shells ];
-  } // localModule { inherit self; };
+  flakeModule = args:
+    let
+      _file = __curPos.file;
+    in
+    {
+      inherit _file;
+      key = _file;
+
+      imports = [ config.flake.modules.flake.shells ];
+    } // localModule args;
 in
 {
   # import locally (dogfooding)

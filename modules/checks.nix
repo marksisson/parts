@@ -3,6 +3,18 @@ let
   # Get extra inputs from the development partition
   inputs = config.partitions.development.extraInputs;
 
+  localModule = {
+    imports = [ inputs.git-hooks.flakeModule ];
+
+    perSystem = { config, lib, options, pkgs, system, ... }: {
+      shells.default.packages = with config.pre-commit; settings.enabledPackages;
+
+      shells.default.shellHook = ''
+        ${with config.pre-commit; shellHook}
+      '';
+    };
+  };
+
   flakeModule =
     let
       _file = __curPos.file;
@@ -11,22 +23,11 @@ let
       inherit _file;
       key = _file;
 
-      imports = [
-        inputs.git-hooks.flakeModule
-        config.flake.modules.flake.shells
-      ];
-
-      perSystem = { config, lib, options, pkgs, system, ... }: {
-        shells.default.packages = with config.pre-commit; settings.enabledPackages;
-
-        shells.default.shellHook = ''
-          ${with config.pre-commit; shellHook}
-        '';
-      };
-    };
+      imports = [ config.flake.modules.flake.shells ];
+    } // localModule;
 
   partitionedModule = {
-    partitions.development.module = flakeModule;
+    partitions.development.module = localModule;
   };
 in
 {

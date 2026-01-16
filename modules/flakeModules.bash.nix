@@ -1,5 +1,6 @@
-{ config, ... }: {
-  flake.modules.flake.bash =
+{ config, ... }:
+let
+  flakeModule =
     let
       _file = __curPos.file;
     in
@@ -16,4 +17,7 @@
         ];
       };
     };
+in
+{
+  flake.modules.flake.bash = flakeModule;
 }
