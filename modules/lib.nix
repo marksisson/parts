@@ -1,9 +1,13 @@
 { inputs, ... }:
 let
-  localModule = {
-    flake.lib = import ../lib inputs;
-  };
+  mkFlake = args: module: inputs.flake-parts.lib.mkFlake args module;
+
+  modulesIn = directory: with inputs.nixpkgs.lib; (
+    filter (n: strings.hasSuffix ".nix" n) (filesystem.listFilesRecursive directory)
+  ) ++ [{ systems = import inputs.systems; }];
 in
 {
-  imports = [ localModule ];
+  flake.lib = {
+    inherit mkFlake modulesIn;
+  };
 }

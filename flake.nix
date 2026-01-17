@@ -10,6 +10,7 @@
     systems-linux.url = "github:nix-systems/default-darwin";
   };
 
-  outputs = inputs: with import ./lib inputs;
+  outputs = inputs:
+    with import ./modules/lib.nix { inherit inputs; }; with flake.lib;
     mkFlake { inherit inputs; } { imports = modulesIn ./modules; };
 }
