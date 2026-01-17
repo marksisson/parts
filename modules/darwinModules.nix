@@ -26,6 +26,5 @@ let
     } // localModule args;
 in
 {
-  imports = [ localModule ];
   flake.modules.flake.darwinModules = flakeModule;
 }
