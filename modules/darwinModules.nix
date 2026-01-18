@@ -20,10 +20,13 @@ let
     };
   };
 
-  flakeModule = args:
-    let _file = __curPos.file; key = _file; in {
-      inherit _file key;
-    } // localModule args;
+  flakeModule = let _file = __curPos.file; key = _file; in {
+    inherit _file key;
+
+    imports = [
+      localModule
+    ];
+  };
 in
 {
   flake.modules.flake.darwinModules = flakeModule;
