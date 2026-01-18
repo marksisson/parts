@@ -3,7 +3,7 @@ let
   # Get extra inputs from the development partition
   inputs = config.partitions.development.extraInputs;
 
-  localModule = { options, ... }: {
+  localModule = {
     imports = [ inputs.treefmt.flakeModule ];
 
     perSystem = { config, lib, pkgs, system, ... }: {
@@ -20,12 +20,12 @@ let
     };
   };
 
-  flakeModule = args:
+  flakeModule =
     let _file = __curPos.file; key = _file; in {
       inherit _file key;
 
       imports = [ config.flake.modules.flake.shells ];
-    } // localModule args;
+    } // localModule;
 
   partitionedModule = {
     partitions.development.module = localModule;
