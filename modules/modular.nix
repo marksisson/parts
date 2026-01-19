@@ -218,7 +218,7 @@ let
     key = "26918B48-EDC6-447D-A3BA-0A3E2F0763C3";
 
     imports = [
-      config.flake.modules.flake.modules
+      config.flake.flakeModules.modules
       localModule
     ];
   };

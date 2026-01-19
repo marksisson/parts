@@ -1,6 +1,16 @@
 { inputs, ... }:
 let
-  mkFlake = args: module: inputs.flake-parts.lib.mkFlake args module;
+  defaultModules = [
+    { systems = import inputs.systems; }
+  ];
+
+  mkFlake = args: module: inputs.flake-parts.lib.mkFlake args { imports = [ module ] ++ defaultModules; };
+
+  mkModuleKey = { flakeName, flakeVersion, moduleName, moduleFile, ... }:
+    with inputs.nixpkgs.lib; let
+      relativeModuleFile = concatStringsSep "/" (drop 4 (splitString "/" moduleFile));
+    in
+    "${flakeName}/${relativeModuleFile}?flakeModule=${moduleName}@${flakeVersion}";
 
   modulesIn = directory: with inputs.nixpkgs.lib; let
     moduleFiles =
@@ -10,10 +20,10 @@ let
       else
         [ ];
   in
-  moduleFiles ++ [{ systems = import inputs.systems; }];
+  moduleFiles;
 in
 {
   flake.lib = {
-    inherit mkFlake modulesIn;
+    inherit mkFlake mkModuleKey modulesIn;
   };
 }

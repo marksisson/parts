@@ -1,5 +1,10 @@
-{ inputs, ... }:
+{ config, inputs, moduleLocation, ... }:
 let
+  moduleName = "shells";
+  moduleFile = __curPos.file;
+
+  key = with config.meta; config.flake.lib.mkModuleKey { inherit flakeName flakeVersion moduleName moduleFile; };
+
   localModule = { flake-parts-lib, lib, ... }:
     {
       options = {
@@ -68,14 +73,15 @@ let
     };
 
   flakeModule = {
-    key = "46FB2819-6294-46C2-886B-3858A271A668";
+    inherit key;
 
     imports = [
       localModule
+      config.flake.flakeModules.meta
     ];
   };
 in
 {
   imports = [ localModule ];
-  flake.modules.flake.shells = flakeModule;
+  flake.modules.flake.${moduleName} = flakeModule;
 }
