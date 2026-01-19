@@ -5,6 +5,7 @@
   outputs = { ... }: { };
 
   inputs = {
+    # used for locking and following dependencies; do not access from parent flake
     flake.url = "path:../..";
 
     # dev tools

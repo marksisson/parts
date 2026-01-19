@@ -5,6 +5,10 @@
 @bootstrap:
   just flake bootstrap 2>/dev/null || echo "No user bootstrap defined."
 
+@update:
+  nix flake update --flake `dirname {{justfile()}}`
+  nix flake update --flake `dirname {{justfile()}}`/partitions/development
+
 # import user justfile if it exists
 user_justfile := "{{
   if env('XDG_CACHE_HOME', '') =~ '^/' { env('XDG_CACHE_HOME') }
