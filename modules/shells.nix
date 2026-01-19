@@ -67,8 +67,8 @@ let
       };
     };
 
-  flakeModule = let _file = __curPos.file; key = _file; in {
-    inherit _file key;
+  flakeModule = {
+    key = "46FB2819-6294-46C2-886B-3858A271A668";
 
     imports = [
       localModule

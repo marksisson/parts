@@ -6,8 +6,8 @@ let
       { default = config.flake.modules.flake.systems; };
   };
 
-  flakeModule = let _file = __curPos.file; key = _file; in {
-    inherit _file key;
+  flakeModule = {
+    key = "7F193AF6-B12D-4FC7-8473-129F2F787F80";
 
     imports = [
       inputs.flake-parts.flakeModules.flakeModules

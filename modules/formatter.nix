@@ -20,8 +20,8 @@ let
     };
   };
 
-  flakeModule = let _file = __curPos.file; key = _file; in {
-    inherit _file key;
+  flakeModule = {
+    key = "4D5FE2C3-639C-4061-B0B1-B37BD0FB4A1E";
 
     imports = [
       config.flake.modules.flake.shells

@@ -4,8 +4,8 @@ let
     imports = [ inputs.flake-parts.flakeModules.partitions ];
   };
 
-  flakeModule = let _file = __curPos.file; key = _file; in {
-    inherit _file key;
+  flakeModule = {
+    key = "1FB22DC2-6320-498F-8DD2-F3634F0C460A";
 
     imports = [
       localModule
