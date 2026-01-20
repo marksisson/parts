@@ -1,4 +1,4 @@
-{ config, flake-parts-lib, self, ... }:
+{ config, inputs, self, ... }:
 let
   componentName = "shells";
   componentFile = __curPos.file;
@@ -8,7 +8,7 @@ let
   module = { lib, ... }:
     {
       options = {
-        perSystem = flake-parts-lib.mkPerSystemOption ({ pkgs, ... }: with lib; with types;
+        perSystem = inputs.flake-parts.lib.mkPerSystemOption ({ pkgs, ... }: with lib; with types;
           let
             inputsFrom = mkOption {
               type = listOf package;

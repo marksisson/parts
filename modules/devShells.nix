@@ -7,14 +7,12 @@ let
 
   module = { lib, ... }:
     {
-      config = {
-        perSystem = { config, pkgs, system, ... }: {
-          devShells = lib.mapAttrs
-            (name: shell: pkgs.mkShell.override shell.mkShellOverrides {
-              inherit (shell) inputsFrom name packages shellHook stdenv;
-            })
-            config.shells;
-        };
+      perSystem = { config, pkgs, system, ... }: {
+        devShells = lib.mapAttrs
+          (name: shell: pkgs.mkShell.override shell.mkShellOverrides {
+            inherit (shell) inputsFrom name packages shellHook stdenv;
+          })
+          config.shells;
       };
     };
 
@@ -23,6 +21,7 @@ let
     imports = [
       module
       self.flakeModules.shells
+      self.flakeModules.systems
     ];
   };
 in

@@ -22,6 +22,7 @@ let
       module
       self.flakeModules.git-hooks
       self.flakeModules.shells
+      self.flakeModules.systems
     ];
   };
 in
