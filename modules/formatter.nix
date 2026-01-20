@@ -1,9 +1,10 @@
-{ config, ... }:
+{ config, self, ... }:
 let
   # Get extra inputs from the development partition
   inputs = config.partitions.development.extraInputs;
 
-  localModule = {
+  module = let
+  in {
     imports = [ inputs.treefmt.flakeModule ];
 
     perSystem = { config, lib, pkgs, system, ... }: {
@@ -20,20 +21,20 @@ let
     };
   };
 
-  flakeModule = {
+  component = {
     key = "4D5FE2C3-639C-4061-B0B1-B37BD0FB4A1E";
 
     imports = [
-      config.flake.flakeModules.shells
-      localModule
+      module
+      self.flakeModules.shells
     ];
   };
 
   partitionedModule = {
-    partitions.development.module = localModule;
+    partitions.development = { inherit module; };
   };
 in
 {
   imports = [ partitionedModule ];
-  flake.modules.flake.formatter = flakeModule;
+  flake.modules.flake.formatter = component;
 }

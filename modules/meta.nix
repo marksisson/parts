@@ -1,12 +1,12 @@
-{ config, lib, ... }:
+{ config, ... }:
 let
-  moduleName = "meta";
-  moduleFile = __curPos.file;
+  componentName = "meta";
+  componentFile = __curPos.file;
 
-  key = with config.meta; config.flake.lib.mkModuleKey { inherit flakeName flakeVersion moduleName moduleFile; };
+  key = with config.meta; config.flake.lib.mkComponentKey { inherit flakeName flakeVersion componentName componentFile; };
 
-  module = with lib; with types; {
-    options = {
+  module = { lib, ... }: {
+    options = with lib; with types; {
       meta = mkOption {
         type = submodule {
           options = {
@@ -32,12 +32,12 @@ let
     meta.flakeVersion = "1.0.0";
   };
 
-  flakeModule = {
+  component = {
     inherit key;
     imports = [ module ];
   };
 in
 {
   imports = [ localModule ];
-  flake.modules.flake.${moduleName} = flakeModule;
+  flake.modules.flake.${componentName} = component;
 }

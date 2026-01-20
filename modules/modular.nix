@@ -1,6 +1,6 @@
-{ config, inputs, ... }:
+{ self, ... }:
 let
-  localModule = { config, lib, ... }:
+  module = { config, lib, ... }:
     let
       cfg = config;
 
@@ -214,17 +214,17 @@ let
         };
     };
 
-  flakeModule = {
+  component = {
     key = "26918B48-EDC6-447D-A3BA-0A3E2F0763C3";
 
     imports = [
-      config.flake.flakeModules.modules
-      localModule
+      module
+      self.flakeModules.modules
     ];
   };
 
 in
 {
-  imports = [ localModule ];
-  flake.modules.flake.modular = flakeModule;
+  imports = [ module ];
+  flake.modules.flake.modular = component;
 }

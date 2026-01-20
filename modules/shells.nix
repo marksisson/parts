@@ -1,11 +1,11 @@
-{ config, inputs, moduleLocation, ... }:
+{ config, self, ... }:
 let
-  moduleName = "shells";
-  moduleFile = __curPos.file;
+  componentName = "shells";
+  componentFile = __curPos.file;
 
-  key = with config.meta; config.flake.lib.mkModuleKey { inherit flakeName flakeVersion moduleName moduleFile; };
+  key = with config.meta; config.flake.lib.mkComponentKey { inherit flakeName flakeVersion componentName componentFile; };
 
-  localModule = { flake-parts-lib, lib, ... }:
+  module = { flake-parts-lib, lib, ... }:
     {
       options = {
         perSystem = flake-parts-lib.mkPerSystemOption ({ pkgs, ... }: with lib; with types;
@@ -72,16 +72,16 @@ let
       };
     };
 
-  flakeModule = {
+  component = {
     inherit key;
 
     imports = [
-      localModule
-      config.flake.flakeModules.meta
+      module
+      self.flakeModules.meta
     ];
   };
 in
 {
-  imports = [ localModule ];
-  flake.modules.flake.${moduleName} = flakeModule;
+  imports = [ module ];
+  flake.modules.flake.${componentName} = component;
 }

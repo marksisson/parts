@@ -1,18 +1,16 @@
 { inputs, ... }:
 let
-  localModule = {
-    imports = [ inputs.flake-parts.flakeModules.partitions ];
-  };
+  module = inputs.flake-parts.flakeModules.partitions;
 
-  flakeModule = {
+  component = {
     key = "1FB22DC2-6320-498F-8DD2-F3634F0C460A";
 
     imports = [
-      localModule
+      module
     ];
   };
 in
 {
-  imports = [ localModule ];
-  flake.modules.flake.partitions = flakeModule;
+  imports = [ module ];
+  flake.modules.flake.partitions = component;
 }

@@ -1,8 +1,7 @@
-{ inputs, ... }:
 let
   partition = "development";
 
-  localModule = {
+  module = {
     partitionedAttrs = {
       checks = partition;
       devShells = partition;
@@ -13,5 +12,5 @@ let
   };
 in
 {
-  imports = [ localModule ];
+  imports = [ module ];
 }
