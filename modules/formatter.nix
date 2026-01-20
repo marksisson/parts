@@ -23,7 +23,7 @@ let
     };
 
   component = {
-    key = "4D5FE2C3-639C-4061-B0B1-B37BD0FB4A1E";
+    #key = "4D5FE2C3-639C-4061-B0B1-B37BD0FB4A1E";
 
     imports = [
       module

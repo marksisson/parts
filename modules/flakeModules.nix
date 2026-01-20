@@ -11,7 +11,7 @@ let
   };
 
   component = {
-    key = "7F193AF6-B12D-4FC7-8473-129F2F787F80";
+    #key = "7F193AF6-B12D-4FC7-8473-129F2F787F80";
     imports = [ module ];
   };
 in

@@ -10,7 +10,7 @@ let
   };
 
   component = {
-    inherit key;
+    #inherit key;
     imports = [ module ];
   };
 in

@@ -8,7 +8,7 @@ let
   module = inputs.flake-parts.flakeModules.modules;
 
   component = {
-    inherit key;
+    #inherit key;
     imports = [ module ];
   };
 in
