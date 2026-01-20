@@ -1,16 +1,16 @@
 { config, self, ... }:
 let
-  componentName = "checks";
+  componentName = "git-hooks";
   componentFile = __curPos.file;
 
   key = with config.meta; config.flake.lib.mkComponentKey { inherit flakeName flakeVersion componentName componentFile; };
 
-  module = {
-    perSystem = { config, ... }: {
-      shells.default.packages = with config.pre-commit; settings.enabledPackages;
-      shells.default.shellHook = "${with config.pre-commit; shellHook}";
-    };
-  };
+  module =
+    let
+      # Get extra inputs from the development partition
+      inputs = config.partitions.development.extraInputs;
+    in
+    inputs.git-hooks.flakeModule;
 
   partitionedModule = {
     partitions.development.module = module;
@@ -18,11 +18,7 @@ let
 
   component = {
     inherit key;
-    imports = [
-      module
-      self.flakeModules.git-hooks
-      self.flakeModules.shells
-    ];
+    imports = [ module ];
   };
 in
 {

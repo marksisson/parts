@@ -1,11 +1,11 @@
-{ config, self, ... }:
+{ config, flake-parts-lib, self, ... }:
 let
   componentName = "shells";
   componentFile = __curPos.file;
 
   key = with config.meta; config.flake.lib.mkComponentKey { inherit flakeName flakeVersion componentName componentFile; };
 
-  module = { flake-parts-lib, lib, ... }:
+  module = { lib, ... }:
     {
       options = {
         perSystem = flake-parts-lib.mkPerSystemOption ({ pkgs, ... }: with lib; with types;
@@ -60,25 +60,11 @@ let
             options = { inherit shells; };
           });
       };
-
-      config = {
-        perSystem = { config, pkgs, system, ... }: {
-          devShells = lib.mapAttrs
-            (name: shell: pkgs.mkShell.override shell.mkShellOverrides {
-              inherit (shell) inputsFrom name packages shellHook stdenv;
-            })
-            config.shells;
-        };
-      };
     };
 
   component = {
     inherit key;
-
-    imports = [
-      module
-      self.flakeModules.meta
-    ];
+    imports = [ module ];
   };
 in
 {

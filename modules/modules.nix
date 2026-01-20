@@ -1,16 +1,18 @@
-{ inputs, ... }:
+{ config, inputs, ... }:
 let
+  componentName = "modules";
+  componentFile = __curPos.file;
+
+  key = with config.meta; config.flake.lib.mkComponentKey { inherit flakeName flakeVersion componentName componentFile; };
+
   module = inputs.flake-parts.flakeModules.modules;
 
   component = {
-    key = "E5AB2389-86CC-427B-938A-5438F6A27DD6";
-
-    imports = [
-      module
-    ];
+    inherit key;
+    imports = [ module ];
   };
 in
 {
   imports = [ module ];
-  flake.modules.flake.modules = component;
+  flake.modules.flake.${componentName} = component;
 }
