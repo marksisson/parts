@@ -11,6 +11,4 @@ let
     partitions.${partition}.extraInputsFlake = ../partitions/${partition};
   };
 in
-{
-  imports = [ module ];
-}
+module

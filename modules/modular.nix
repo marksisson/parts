@@ -1,4 +1,4 @@
-{ self, ... }:
+{ inputs, self, ... }:
 let
   module = { config, lib, ... }:
     let
@@ -215,14 +215,11 @@ let
     };
 
   component = {
-    #key = "26918B48-EDC6-447D-A3BA-0A3E2F0763C3";
-
     imports = [
       module
-      self.flakeModules.modules
+      inputs.flake-parts.flakeModules.modules
     ];
   };
-
 in
 {
   imports = [ module ];

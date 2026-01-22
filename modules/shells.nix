@@ -1,14 +1,9 @@
-{ config, inputs, self, ... }:
+{ self, ... }:
 let
-  componentName = "shells";
-  componentFile = __curPos.file;
-
-  key = with config.meta; config.flake.lib.mkComponentKey { inherit flakeName flakeVersion componentName componentFile; };
-
-  module = { lib, ... }:
+  module = { flake-parts-lib, lib, ... }:
     {
       options = {
-        perSystem = inputs.flake-parts.lib.mkPerSystemOption ({ pkgs, ... }: with lib; with types;
+        perSystem = flake-parts-lib.mkPerSystemOption ({ pkgs, ... }: with lib; with types;
           let
             inputsFrom = mkOption {
               type = listOf package;
@@ -63,11 +58,13 @@ let
     };
 
   component = {
-    #inherit key;
-    imports = [ module ];
+    imports = [
+      module
+      self.flakeModules.systems
+    ];
   };
 in
 {
   imports = [ module ];
-  flake.modules.flake.${componentName} = component;
+  flake.modules.flake.shells = component;
 }

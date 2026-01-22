@@ -1,32 +1,24 @@
 { inputs, ... }:
 let
-  defaultModules = [
-    { systems = import inputs.systems; }
-  ];
+  module = {
+    mkFlake = args: module: inputs.flake-parts.lib.mkFlake args {
+      imports = [ module { systems = import inputs.systems; } ];
+    };
 
-  mkFlake = args: module: inputs.flake-parts.lib.mkFlake args { imports = [ module ] ++ defaultModules; };
-
-  mkComponentKey = { flakeName, flakeVersion, componentName, componentFile, ... }:
-    with inputs.nixpkgs.lib; let
-      relativeComponentFile = concatStringsSep "/" (drop 4 (splitString "/" componentFile));
+    modulesIn = directory: with inputs.nixpkgs.lib; let
+      moduleFiles =
+        if filesystem.pathIsDirectory directory
+        then
+          (filter (n: strings.hasSuffix ".nix" n) (filesystem.listFilesRecursive directory))
+        else
+          [ ];
     in
-    "${flakeName}/${relativeComponentFile}?component=${componentName}@${flakeVersion}";
+    moduleFiles;
+  };
 
-  modulesIn = directory: with inputs.nixpkgs.lib; let
-    moduleFiles =
-      if filesystem.pathIsDirectory directory
-      then
-        (filter (n: strings.hasSuffix ".nix" n) (filesystem.listFilesRecursive directory))
-      else
-        [ ];
-  in
-  moduleFiles;
+  component = module;
 in
 {
-  flake.lib = {
-    inherit
-      mkFlake
-      mkComponentKey
-      modulesIn;
-  };
+  flake.lib = module;
+  flake.modules.flake.lib = component;
 }

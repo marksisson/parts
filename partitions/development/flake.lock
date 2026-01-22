@@ -1,24 +1,5 @@
 {
   "nodes": {
-    "flake": {
-      "inputs": {
-        "flake-parts": "flake-parts",
-        "nixpkgs": "nixpkgs",
-        "nixpkgs-unstable": "nixpkgs-unstable",
-        "systems": "systems",
-        "systems-darwin": "systems-darwin",
-        "systems-linux": "systems-linux"
-      },
-      "locked": {
-        "path": "../..",
-        "type": "path"
-      },
-      "original": {
-        "path": "../..",
-        "type": "path"
-      },
-      "parent": []
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -57,17 +38,17 @@
         "flake-compat": "flake-compat",
         "gitignore": "gitignore",
         "nixpkgs": [
-          "flake",
+          "main",
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1768834646,
-        "narHash": "sha256-sZq+qm+Pg1jw+hxncm5LDujLxgPcAop3G55jPSvWhfU=",
-        "rev": "2f927757d32bcd2b11e5017bdb9f11fd9719af53",
-        "revCount": 1153,
+        "lastModified": 1769069492,
+        "narHash": "sha256-Efs3VUPelRduf3PpfPP2ovEB4CXT7vHf8W+xc49RL/U=",
+        "rev": "a1ef738813b15cf8ec759bdff5761b027e3e1d23",
+        "revCount": 1159,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/cachix/git-hooks.nix/0.1.1153%2Brev-2f927757d32bcd2b11e5017bdb9f11fd9719af53/019bd758-826b-7c57-abb4-3292fea158cf/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/cachix/git-hooks.nix/0.1.1159%2Brev-a1ef738813b15cf8ec759bdff5761b027e3e1d23/019be6ce-9b4b-7bd2-abdc-d64355394649/source.tar.gz"
       },
       "original": {
         "type": "tarball",
@@ -95,14 +76,33 @@
         "type": "github"
       }
     },
+    "main": {
+      "inputs": {
+        "flake-parts": "flake-parts",
+        "nixpkgs": "nixpkgs",
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "systems": "systems",
+        "systems-darwin": "systems-darwin",
+        "systems-linux": "systems-linux"
+      },
+      "locked": {
+        "path": "../..",
+        "type": "path"
+      },
+      "original": {
+        "path": "../..",
+        "type": "path"
+      },
+      "parent": []
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1768621446,
-        "narHash": "sha256-6YwHV1cjv6arXdF/PQc365h1j+Qje3Pydk501Rm4Q+4=",
-        "rev": "72ac591e737060deab2b86d6952babd1f896d7c5",
-        "revCount": 905964,
+        "lastModified": 1768940263,
+        "narHash": "sha256-sJERJIYTKPFXkoz/gBaBtRKke82h4DkX3BBSsKbfbvI=",
+        "rev": "3ceaaa8bc963ced4d830e06ea2d0863b6490ff03",
+        "revCount": 906247,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/NixOS/nixpkgs/0.2511.905964%2Brev-72ac591e737060deab2b86d6952babd1f896d7c5/019bcf9f-543a-7550-86e0-2e6a8fefa031/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/NixOS/nixpkgs/0.2511.906247%2Brev-3ceaaa8bc963ced4d830e06ea2d0863b6490ff03/019be1ae-9947-752c-81ca-8b8670ae9892/source.tar.gz"
       },
       "original": {
         "type": "tarball",
@@ -126,12 +126,12 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1768178648,
-        "narHash": "sha256-kz/F6mhESPvU1diB7tOM3nLcBfQe7GU7GQCymRlTi/s=",
-        "rev": "3fbab70c6e69c87ea2b6e48aa6629da2aa6a23b0",
-        "revCount": 926176,
+        "lastModified": 1768783163,
+        "narHash": "sha256-tLj4KcRDLakrlpvboTJDKsrp6z2XLwyQ4Zmo+w8KsY4=",
+        "rev": "bde09022887110deb780067364a0818e89258968",
+        "revCount": 930106,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/DeterminateSystems/nixpkgs-weekly/0.1.926176%2Brev-3fbab70c6e69c87ea2b6e48aa6629da2aa6a23b0/019bb5df-1aeb-7e40-bc9b-ee3a3e2b24e0/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/DeterminateSystems/nixpkgs-weekly/0.1.930106%2Brev-bde09022887110deb780067364a0818e89258968/019bd9ed-5f0b-7074-afb0-8bb5e13a7598/source.tar.gz"
       },
       "original": {
         "type": "tarball",
@@ -140,8 +140,8 @@
     },
     "root": {
       "inputs": {
-        "flake": "flake",
         "git-hooks": "git-hooks",
+        "main": "main",
         "treefmt": "treefmt"
       }
     },
@@ -193,7 +193,7 @@
     "treefmt": {
       "inputs": {
         "nixpkgs": [
-          "flake",
+          "main",
           "nixpkgs"
         ]
       },

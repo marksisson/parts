@@ -1,10 +1,5 @@
 { config, self, ... }:
 let
-  componentName = "checks";
-  componentFile = __curPos.file;
-
-  key = with config.meta; config.flake.lib.mkComponentKey { inherit flakeName flakeVersion componentName componentFile; };
-
   module = {
     perSystem = { config, ... }: {
       shells.default.packages = with config.pre-commit; settings.enabledPackages;
@@ -13,14 +8,13 @@ let
   };
 
   partitionedModule = {
-    partitions.development.module = module;
+    partitions.development = { inherit module; };
   };
 
   component = {
-    #inherit key;
     imports = [
       module
-      self.flakeModules.git-hooks
+      (with config.partitions.development; extraInputs.git-hooks.flakeModule)
       self.flakeModules.shells
       self.flakeModules.systems
     ];
@@ -28,5 +22,5 @@ let
 in
 {
   imports = [ partitionedModule ];
-  flake.modules.flake.${componentName} = component;
+  flake.modules.flake.checks = component;
 }
