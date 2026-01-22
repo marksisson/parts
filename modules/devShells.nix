@@ -2,12 +2,17 @@
 let
   module = {
     perSystem = { config, lib, pkgs, ... }: {
-      devShells = lib.mapAttrs
-        (name: shell: pkgs.mkShell.override shell.mkShellOverrides {
-          inherit (shell) inputsFrom name packages shellHook stdenv;
-        })
-        config.shells;
+      devShells =
+        lib.mapAttrs
+          (name: shell: pkgs.mkShell.override shell.mkShellOverrides {
+            inherit (shell) inputsFrom name packages shellHook stdenv;
+          })
+          config.shells;
     };
+  };
+
+  partitionedModule = {
+    partitions.development = { inherit module; };
   };
 
   component = {
@@ -19,6 +24,6 @@ let
   };
 in
 {
-  imports = [ module ];
+  imports = [ partitionedModule ];
   flake.modules.flake.devShells = component;
 }
