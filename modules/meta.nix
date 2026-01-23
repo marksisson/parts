@@ -13,22 +13,15 @@ let
           description = "The version of the flake.";
         };
 
-        flake = mkOption {
-          type = submodule {
-            options = { inherit name version; };
-          };
-          description = "Metadata about the flake.";
-        };
-
         meta = mkOption {
           type = submodule {
-            options = { inherit flake; };
+            options = { inherit name version; };
           };
           description = "Metadata module for flakes.";
         };
       in
       {
-        nixology.meta = meta;
+        nixology = { inherit meta; };
       };
   };
 in

@@ -31,7 +31,7 @@ let
         description = "A set of reusable components.";
 
         apply = mapAttrs (componentName: component: {
-          key = "${config.nixology.meta.flake.name}#components.${componentName}";
+          key = "${config.nixology.meta.name}#components.${componentName}";
           imports = [ component.module ] ++ component.dependencies;
           _class = "flake";
           _file = "${moduleLocation}#components.${componentName}";

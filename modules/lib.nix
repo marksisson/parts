@@ -10,7 +10,7 @@ let
               ./meta.nix
               ./nixology.nix
             ];
-            nixology.meta.flake.name = name;
+            nixology.meta = { inherit name; };
             nixology.components.flake = module;
             systems = import inputs.systems;
           };
