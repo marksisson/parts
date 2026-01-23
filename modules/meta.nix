@@ -1,4 +1,3 @@
-{ config, ... }:
 let
   module = { lib, ... }: {
     options = with lib; with types;
@@ -34,15 +33,8 @@ let
         };
       in
       {
-        inherit meta;
+        nixology.meta = meta;
       };
   };
-
-  component = {
-    inherit module;
-  };
 in
-{
-  imports = [ module ];
-  components.meta = component;
-}
+module

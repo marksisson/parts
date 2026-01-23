@@ -5,9 +5,11 @@ let
       let
         builtinModule = {
           imports = [
+            ./components.nix
             ./meta.nix
+            ./nixology.nix
           ];
-          meta.flake = { inherit name module; };
+          nixology.meta.flake = { inherit name module; };
           systems = import inputs.systems;
         };
 

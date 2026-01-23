@@ -1,0 +1,36 @@
+let
+  module = { lib, ... }: {
+    options = with lib; with types;
+      let
+        nixology = mkOption {
+          type = submoduleWith {
+            modules = [
+              {
+                freeformType = lazyAttrsOf (unique { inherit message; } raw);
+              }
+            ];
+          };
+          inherit description;
+        };
+
+        description = ''
+          Raw attributes. Any attribute can be set here, but some
+          attributes are represented by options, to provide appropriate
+          configuration merging.
+        '';
+
+        message = ''
+          No option has been declared for this attribute, so its definitions can't be merged automatically.
+          Possible solutions:
+            - Load a module that defines this attribute
+            - Declare an option for this attribute
+            - Make sure the attribute is spelled correctly
+            - Define the value only once, with a single definition in a single module
+        '';
+      in
+      {
+        inherit nixology;
+      };
+  };
+in
+module
