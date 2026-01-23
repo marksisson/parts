@@ -12,8 +12,8 @@ let
   };
 
   component = {
-    imports = [
-      module
+    inherit module;
+    dependencies = [
       (with config.partitions.development; extraInputs.git-hooks.flakeModule)
       self.flakeModules.shells
       self.flakeModules.systems
@@ -22,5 +22,5 @@ let
 in
 {
   imports = [ partitionedModule ];
-  flake.modules.flake.checks = component;
+  nixology.components.checks = component;
 }

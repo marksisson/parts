@@ -1,14 +1,15 @@
 { self, ... }:
 let
   module = {
-    perSystem = { config, lib, pkgs, ... }: {
-      devShells =
-        lib.mapAttrs
-          (name: shell: pkgs.mkShell.override shell.mkShellOverrides {
-            inherit (shell) inputsFrom name packages shellHook stdenv;
-          })
-          config.shells;
-    };
+    perSystem = { config, lib, pkgs, ... }:
+      {
+        devShells =
+          lib.mapAttrs
+            (name: shell: pkgs.mkShell.override shell.mkShellOverrides {
+              inherit (shell) inputsFrom name packages shellHook stdenv;
+            })
+            config.shells;
+      };
   };
 
   partitionedModule = {
@@ -16,8 +17,8 @@ let
   };
 
   component = {
-    imports = [
-      module
+    inherit module;
+    dependencies = [
       self.flakeModules.shells
       self.flakeModules.systems
     ];
@@ -25,5 +26,5 @@ let
 in
 {
   imports = [ partitionedModule ];
-  flake.modules.flake.devShells = component;
+  nixology.components.devShells = component;
 }

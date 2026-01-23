@@ -1,8 +1,8 @@
 { config, ... }:
 let
   module = {
-    flake.flakeModules = config.flake.modules.flake //
-      { default = config.flake.modules.flake.systems; };
+    flake.flakeModules = config.nixology.components //
+      { default = config.nixology.components.flake; };
   };
 in
 module

@@ -1,8 +1,8 @@
 { self, ... }:
 let
-  module = { flake-parts-lib, lib, ... }:
-    {
-      options = {
+  module = { flake-parts-lib, lib, ... }: {
+    options =
+      {
         perSystem = flake-parts-lib.mkPerSystemOption ({ pkgs, ... }: with lib; with types;
           let
             inputsFrom = mkOption {
@@ -55,16 +55,16 @@ let
             options = { inherit shells; };
           });
       };
-    };
+  };
 
   component = {
-    imports = [
-      module
+    inherit module;
+    dependencies = [
       self.flakeModules.systems
     ];
   };
 in
 {
   imports = [ module ];
-  flake.modules.flake.shells = component;
+  nixology.components.shells = component;
 }

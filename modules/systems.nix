@@ -4,8 +4,10 @@ let
     systems = import inputs.systems;
   };
 
-  component = module;
+  component = {
+    inherit module;
+  };
 in
 {
-  flake.modules.flake.systems = component;
+  nixology.components.systems = component;
 }

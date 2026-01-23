@@ -215,13 +215,13 @@ let
     };
 
   component = {
-    imports = [
-      module
+    inherit module;
+    dependencies = [
       inputs.flake-parts.flakeModules.modules
     ];
   };
 in
 {
   imports = [ module ];
-  flake.modules.flake.modular = component;
+  nixology.components.modular = component;
 }

@@ -1,27 +1,32 @@
 let
   module = { lib, moduleLocation, ... }: {
-    options = with lib; with types; {
+    options = with lib; with types;
+      {
+        flake.darwinModules = mkOption
+          {
+            type = lazyAttrsOf deferredModule;
 
-      flake.darwinModules = mkOption {
-        type = lazyAttrsOf deferredModule;
-        default = { };
-        apply = mapAttrs (k: v: {
-          _class = "darwin";
-          _file = "${toString moduleLocation}#darwinModules.${k}";
-          imports = [ v ];
-        });
-        description = ''
-          Darwin modules.
+            default = { };
 
-          You may use this for reusable pieces of configuration, service modules, etc.
-        '';
+            apply = mapAttrs (name: module: {
+              _class = "darwin";
+              _file = "${toString moduleLocation}#darwinModules.${name}";
+              imports = [ module ];
+            });
+
+            description = ''
+              Darwin modules.
+
+              You may use this for reusable pieces of configuration, service modules, etc.
+            '';
+          };
       };
-
-    };
   };
 
-  component = module;
+  component = {
+    inherit module;
+  };
 in
 {
-  flake.modules.flake.darwinModules = component;
+  nixology.components.darwinModules = component;
 }

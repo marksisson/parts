@@ -2,11 +2,6 @@ let
   module = { lib, ... }: {
     options = with lib; with types;
       let
-        module = mkOption {
-          type = deferredModule;
-          description = "The main module of the flake.";
-        };
-
         name = mkOption {
           type = str;
           description = "The name of the flake.";
@@ -20,7 +15,7 @@ let
 
         flake = mkOption {
           type = submodule {
-            options = { inherit module name version; };
+            options = { inherit name version; };
           };
           description = "Metadata about the flake.";
         };

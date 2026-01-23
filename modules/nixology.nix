@@ -2,16 +2,17 @@ let
   module = { lib, ... }: {
     options = with lib; with types;
       let
-        nixology = mkOption {
-          type = submoduleWith {
-            modules = [
-              {
-                freeformType = lazyAttrsOf (unique { inherit message; } raw);
-              }
-            ];
+        nixology = mkOption
+          {
+            type = submoduleWith {
+              modules = [
+                {
+                  freeformType = lazyAttrsOf (unique { inherit message; } raw);
+                }
+              ];
+            };
+            inherit description;
           };
-          inherit description;
-        };
 
         description = ''
           Raw attributes. Any attribute can be set here, but some
