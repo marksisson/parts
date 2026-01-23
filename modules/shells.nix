@@ -1,4 +1,4 @@
-{ self, ... }:
+{ config, ... }:
 let
   module = { flake-parts-lib, lib, ... }: {
     options =
@@ -60,7 +60,7 @@ let
   component = {
     inherit module;
     dependencies = [
-      self.flakeModules.systems
+      config.nixology.components.systems
     ];
   };
 in

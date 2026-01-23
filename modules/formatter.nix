@@ -1,4 +1,4 @@
-{ config, self, ... }:
+{ config, ... }:
 let
   module = {
     perSystem = { config, pkgs, ... }:
@@ -25,8 +25,8 @@ let
     inherit module;
     dependencies = [
       (with config.partitions.development; extraInputs.treefmt.flakeModule)
-      self.flakeModules.shells
-      self.flakeModules.systems
+      config.nixology.components.shells
+      config.nixology.components.systems
     ];
   };
 in

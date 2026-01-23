@@ -1,4 +1,4 @@
-{ config, self, ... }:
+{ config, ... }:
 let
   module = {
     perSystem = { config, ... }: {
@@ -15,8 +15,8 @@ let
     inherit module;
     dependencies = [
       (with config.partitions.development; extraInputs.git-hooks.flakeModule)
-      self.flakeModules.shells
-      self.flakeModules.systems
+      config.nixology.components.shells
+      config.nixology.components.systems
     ];
   };
 in

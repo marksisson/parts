@@ -12,7 +12,14 @@ let
             ];
             nixology.meta = { inherit name; };
             nixology.components.flake = module;
+
+            # default systems
             systems = import inputs.systems;
+
+            # default pkgs
+            perSystem = { system, ... }: {
+              _module.args.pkgs = builtins.seq inputs.nixpkgs inputs.nixpkgs.legacyPackages.${system};
+            };
           };
 
         args = builtins.removeAttrs flakeArgs [ "name" ];

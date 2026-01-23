@@ -1,4 +1,4 @@
-{ inputs, self, ... }:
+{ inputs, ... }:
 let
   module = { config, lib, ... }:
     let

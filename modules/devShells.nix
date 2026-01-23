@@ -1,4 +1,4 @@
-{ self, ... }:
+{ config, ... }:
 let
   module = {
     perSystem = { config, lib, pkgs, ... }:
@@ -19,8 +19,8 @@ let
   component = {
     inherit module;
     dependencies = [
-      self.flakeModules.shells
-      self.flakeModules.systems
+      config.nixology.components.shells
+      config.nixology.components.systems
     ];
   };
 in
