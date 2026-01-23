@@ -5,6 +5,9 @@ let
       imports = [ module { systems = import inputs.systems; } ];
     };
 
+    mkComponentKey = { flakeName, componentName, ... }:
+      with inputs.nixpkgs.lib; "${flakeName}#components.${componentName}";
+
     modulesIn = directory: with inputs.nixpkgs.lib; let
       moduleFiles =
         if filesystem.pathIsDirectory directory
