@@ -1,12 +1,23 @@
 { inputs, ... }:
 let
   module = {
-    mkFlake = args: module: inputs.flake-parts.lib.mkFlake args {
-      imports = [ module { systems = import inputs.systems; } ];
-    };
+    mkFlake = flakeArgs@{ name, ... }: flakeModule:
+      let
+        builtinModule = {
+          imports = [
+            ./meta.nix
+          ];
+          meta.flake = { inherit name module; };
+          systems = import inputs.systems;
+        };
 
-    mkComponentKey = { flakeName, componentName, ... }:
-      with inputs.nixpkgs.lib; "${flakeName}#components.${componentName}";
+        args = builtins.removeAttrs flakeArgs [ "name" ];
+
+        module = {
+          imports = [ flakeModule builtinModule ];
+        };
+      in
+      inputs.flake-parts.lib.mkFlake args module;
 
     modulesIn = directory: with inputs.nixpkgs.lib; let
       moduleFiles =
