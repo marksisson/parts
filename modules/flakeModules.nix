@@ -1,9 +1,11 @@
 { config, inputs, ... }:
 let
-  module = { config, ... }: {
-    flake.flakeModules = config.nixology.components //
-      { default = config.nixology.components.flake; };
-  };
+  module = { config, ... }:
+    {
+      flake.flakeModules =
+        config.nixology.components //
+        { default = config.nixology.components.flake; };
+    };
 
   component = {
     inherit module;

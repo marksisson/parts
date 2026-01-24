@@ -12,5 +12,5 @@
 
   outputs = inputs:
     with import ./modules/lib.nix { inherit inputs; }; with flake.lib;
-    mkFlake { name = "github:nixology/flake"; inherit inputs; } { debug = true; imports = modulesIn ./modules; };
+    mkFlake { inherit inputs; } { imports = modulesIn ./modules; };
 }
