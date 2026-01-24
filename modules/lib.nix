@@ -1,42 +1,16 @@
-{ inputs, ... }:
+{ inputs, lib ? inputs.nixpkgs.lib, ... }:
 let
   library = {
     mkFlake = flakeArgs@{ name, ... }: flakeModule:
       let
-        builtinModule =
-          {
-            # this module is directly accessed from the builtinModule via the component,
-            # so it needs to have a static key to facilitate deduplication
-            key = "(import)github:nixology/flake#components.lib.builtinModule";
-
-            imports = [
-              ./components.nix
-              ./meta.nix
-              ./nixology.nix
-            ];
-
-            nixology.meta.name = name;
-
-            # default systems
-            systems = import inputs.systems;
-
-            # default pkgs
-            perSystem = { system, ... }: {
-              _module.args.pkgs = builtins.seq inputs.nixpkgs inputs.nixpkgs.legacyPackages.${system};
-            };
-          };
-
-        module = {
-          imports = [ flakeModule builtinModule ];
-        };
-
-        component = {
-          inherit module;
-        };
-
         args = builtins.removeAttrs flakeArgs [ "name" ];
+        module = { imports = [ flakeModule builtinModule ]; };
+        component = { module = flakeModule; };
       in
-      inputs.flake-parts.lib.mkFlake args { imports = [ flakeModule builtinModule ]; nixology.components.flake = component; };
+      inputs.flake-parts.lib.mkFlake args {
+        imports = [ module { nixology.meta.name = name; } ];
+        nixology.components.flake = component;
+      };
 
     modulesIn = directory: with inputs.nixpkgs.lib; let
       moduleFiles =
@@ -48,6 +22,27 @@ let
     in
     moduleFiles;
   };
+
+  builtinModule =
+    {
+      # this module is directly accessed from the builtinModule via the component,
+      # so it needs to have a static key to facilitate deduplication
+      key = "(import)github:nixology/flake#components.lib.builtinModule";
+
+      imports = [
+        ./components.nix
+        ./meta.nix
+        ./nixology.nix
+      ];
+
+      # default systems
+      systems = import inputs.systems;
+
+      # default pkgs
+      perSystem = { system, ... }: {
+        _module.args.pkgs = builtins.seq inputs.nixpkgs inputs.nixpkgs.legacyPackages.${system};
+      };
+    };
 
   module = { lib, ... }: {
     # this module is directly accessed from the builtinModule via the component,
