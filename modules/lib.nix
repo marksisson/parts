@@ -1,7 +1,7 @@
 { inputs, ... }:
 let
   library = {
-    mkFlake = args: module:
+    mkFlake = flakeArgs@{ name, ... }: flakeModule:
       let
         builtinModule =
           {
@@ -15,6 +15,8 @@ let
               ./nixology.nix
             ];
 
+            nixology.meta.name = name;
+
             # default systems
             systems = import inputs.systems;
 
@@ -24,13 +26,17 @@ let
             };
           };
 
-        component = {
-          module = {
-            imports = [ module builtinModule ];
-          };
+        module = {
+          imports = [ flakeModule builtinModule ];
         };
+
+        component = {
+          inherit module;
+        };
+
+        args = builtins.removeAttrs flakeArgs [ "name" ];
       in
-      inputs.flake-parts.lib.mkFlake args { imports = [ module builtinModule ]; nixology.components.flake = component; };
+      inputs.flake-parts.lib.mkFlake args { imports = [ flakeModule builtinModule ]; nixology.components.flake = component; };
 
     modulesIn = directory: with inputs.nixpkgs.lib; let
       moduleFiles =
