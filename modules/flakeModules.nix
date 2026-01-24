@@ -4,7 +4,7 @@ let
     {
       flake.flakeModules =
         config.nixology.components //
-        { default = config.nixology.components.flake; };
+        { default = { imports = builtins.attrValues config.nixology.components; }; };
     };
 
   component = {

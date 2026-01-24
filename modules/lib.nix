@@ -9,7 +9,7 @@ let
       in
       inputs.flake-parts.lib.mkFlake args {
         imports = [ module { nixology.meta.name = name; } ];
-        nixology.components.flake = component;
+        #nixology.components.flake = component;
       };
 
     modulesIn = directory: with inputs.nixpkgs.lib; let
