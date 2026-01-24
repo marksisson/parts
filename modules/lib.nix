@@ -2,7 +2,35 @@
 let
   library = {
     mkFlake = args: module:
-      inputs.flake-parts.lib.mkFlake args { imports = [ module builtinModule ]; };
+      let
+        builtinModule =
+          {
+            # this module is directly accessed from the builtinModule via the component,
+            # so it needs to have a static key to facilitate deduplication
+            key = "(import)github:nixology/flake#components.lib.builtinModule";
+
+            imports = [
+              ./components.nix
+              ./meta.nix
+              ./nixology.nix
+            ];
+
+            # default systems
+            systems = import inputs.systems;
+
+            # default pkgs
+            perSystem = { system, ... }: {
+              _module.args.pkgs = builtins.seq inputs.nixpkgs inputs.nixpkgs.legacyPackages.${system};
+            };
+          };
+
+        component = {
+          module = {
+            imports = [ module builtinModule ];
+          };
+        };
+      in
+      inputs.flake-parts.lib.mkFlake args { imports = [ module builtinModule ]; nixology.components.flake = component; };
 
     modulesIn = directory: with inputs.nixpkgs.lib; let
       moduleFiles =
@@ -14,26 +42,6 @@ let
     in
     moduleFiles;
   };
-
-  builtinModule =
-    {
-      imports = [
-        ./components.nix
-        ./meta.nix
-        ./nixology.nix
-      ];
-
-      # make the whole flake module a component
-      nixology.components.flake = component;
-
-      # default systems
-      systems = import inputs.systems;
-
-      # default pkgs
-      perSystem = { system, ... }: {
-        _module.args.pkgs = builtins.seq inputs.nixpkgs inputs.nixpkgs.legacyPackages.${system};
-      };
-    };
 
   module = { lib, ... }: {
     # this module is directly accessed from the builtinModule via the component,
