@@ -21,12 +21,12 @@ let
   component = {
     inherit module;
     dependencies = [
-      components.nixology.shells
-      components.nixology.systems
+      components.nixology.flake.shells
+      components.nixology.flake.systems
     ];
   };
 in
 {
   imports = [ partitionedModule ];
-  components.nixology.devShells = component;
+  components.nixology.flake.devShells = component;
 }

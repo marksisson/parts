@@ -1,5 +1,6 @@
+{ moduleLocation, ... }:
 let
-  module = { lib, moduleLocation, ... }: {
+  module = { lib, ... }: {
     options = with lib; with types;
       {
         flake.darwinModules = mkOption
@@ -28,5 +29,5 @@ let
   };
 in
 {
-  components.nixology.darwinModules = component;
+  components.nixology.flake.darwinModules = component;
 }

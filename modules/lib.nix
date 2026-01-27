@@ -9,7 +9,7 @@ let
       in
       inputs.flake-parts.lib.mkFlake args {
         imports = [ module { meta.name = name; } ];
-        #components.nixology.flake = component;
+        #components.nixology.flake.flake = component;
       };
 
     modulesIn = directory: with inputs.nixpkgs.lib; let
@@ -23,31 +23,30 @@ let
     moduleFiles;
   };
 
-  builtinModule =
+  builtinModule = { lib, ... }:
     {
       # this module is directly accessed from the builtinModule via the component,
       # so it needs to have a static key to facilitate deduplication
-      key = "(import)github:nixology/flake#components.nixology.lib.builtinModule";
+      key = "(import)github:nixology/flake#components.nixology.flake.lib.builtinModule";
 
       imports = [
         ./components.nix
         ./meta.nix
-        ./nixology.nix
       ];
 
       # default systems
-      systems = import inputs.systems;
+      systems = lib.mkDefault (import inputs.systems);
 
       # default pkgs
       perSystem = { system, ... }: {
-        _module.args.pkgs = builtins.seq inputs.nixpkgs inputs.nixpkgs.legacyPackages.${system};
+        _module.args.pkgs = lib.mkDefault (builtins.seq inputs.nixpkgs inputs.nixpkgs.legacyPackages.${system});
       };
     };
 
   module = { lib, ... }: {
     # this module is directly accessed from the builtinModule via the component,
     # so it needs to have a static key to facilitate deduplication
-    key = "(import)github:nixology/flake#components.nixology.lib";
+    key = "(import)github:nixology/flake#components.nixology.flake.lib";
 
     options = with lib; with types; {
       flake.lib = mkOption {
@@ -57,7 +56,7 @@ let
       };
     };
 
-    config.flake.lib = library;
+    config.flake.lib = lib.mkDefault library;
   };
 
   component = {
@@ -65,6 +64,7 @@ let
   };
 in
 {
-  flake.lib = library;
-  components.nixology.lib = component;
+  flake.lib = library; # this is for lib access when imported directly (e.g. in this flake)
+  imports = [ module ];
+  components.nixology.flake.lib = component;
 }

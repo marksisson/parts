@@ -1,7 +1,7 @@
 { inputs, ... }:
 let
   bundlersModule = inputs.flake-parts.flakeModules.bundlers;
-  bundlersComponent = { module =  bundlersModule; };
+  bundlersComponent = { module = bundlersModule; };
 
   easyOverlayModule = inputs.flake-parts.flakeModules.easyOverlay;
   easyOverlayComponent = { module = easyOverlayModule; };
@@ -22,9 +22,9 @@ in
     partitionsModule
   ];
 
-  components.nixology.bundlers = bundlersComponent;
-  components.nixology.easyOverlay = easyOverlayComponent;
-  components.nixology.flakeModules = flakeModulesComponent;
-  components.nixology.modules = modulesComponent;
-  components.nixology.partitions = partitionsComponent;
+  components.nixology.parts.bundlers = bundlersComponent;
+  components.nixology.parts.easyOverlay = easyOverlayComponent;
+  components.nixology.parts.flakeModules = flakeModulesComponent;
+  components.nixology.parts.modules = modulesComponent;
+  components.nixology.parts.partitions = partitionsComponent;
 }

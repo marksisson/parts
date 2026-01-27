@@ -219,11 +219,11 @@ let
   component = {
     inherit module;
     dependencies = [
-      components.nixology.modules
+      components.nixology.parts.modules
     ];
   };
 in
 {
   imports = [ module ];
-  components.nixology.modular = component;
+  components.nixology.flake.modular = component;
 }

@@ -2,23 +2,29 @@
 let
   components = config.components;
 
-  module = { inputs, ... }: {
-    imports = [ inputs.treefmt.flakeModule ];
-    perSystem = { config, pkgs, ... }:
-      {
-        treefmt =
-          {
-            projectRootFile = "flake.nix";
-            package = pkgs.treefmt;
-            programs = {
-              nixpkgs-fmt.enable = true;
-              shfmt.enable = true;
+  module =
+    let
+      # capture partition inputs from config of outer flake
+      # so that is is part of the component
+      inputs = config.partitions.development.extraInputs;
+    in
+    {
+      imports = [ inputs.treefmt.flakeModule ];
+      perSystem = { config, pkgs, ... }:
+        {
+          treefmt =
+            {
+              projectRootFile = "flake.nix";
+              package = pkgs.treefmt;
+              programs = {
+                nixpkgs-fmt.enable = true;
+                shfmt.enable = true;
+              };
             };
-          };
 
-        shells.default.packages = with config.treefmt; builtins.attrValues build.programs;
-      };
-  };
+          shells.default.packages = with config.treefmt; builtins.attrValues build.programs;
+        };
+    };
 
   partitionedModule = {
     partitions.development = { inherit module; };
@@ -27,12 +33,12 @@ let
   component = {
     inherit module;
     dependencies = [
-      components.nixology.shells
-      components.nixology.systems
+      components.nixology.flake.shells
+      components.nixology.flake.systems
     ];
   };
 in
 {
   imports = [ partitionedModule ];
-  components.nixology.formatter = component;
+  components.nixology.flake.formatter = component;
 }

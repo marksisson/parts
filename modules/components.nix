@@ -6,7 +6,7 @@ let
   module = { config, ... }: {
     # this module is directly imported from the library function mkFlake
     # so it needs to have a static key to facilitate deduplication
-    key = "(import)github:nixology/flake#components.nixology.components";
+    key = "(import)github:nixology/flake#components.nixology.flake.components";
 
     options = with lib; with types; let
       name = mkOption {
@@ -32,26 +32,30 @@ let
       };
 
       components = mkOption {
-        type = lazyAttrsOf (lazyAttrsOf (submodule ({ name, ... }: {
+        type = lazyAttrsOf (lazyAttrsOf (lazyAttrsOf (submodule ({ name, ... }: {
           options = {
             inherit name version module dependencies;
           };
-        })));
+        }))));
 
         default = { };
 
         description = "A set of reusable components.";
 
         apply =
-          mapAttrs (namespace: components:
+          mapAttrs (namespace: groups:
             mapAttrs
-              (name: component: {
-                key = "${meta.name}#components.${namespace}.${name}";
-                imports = [ component.module ] ++ component.dependencies;
-                _class = "flake";
-                _file = "${moduleLocation}#components.${namespace}.${name}";
-              })
-              components
+              (group: components:
+                mapAttrs
+                  (name: component: {
+                    key = "${meta.name}#components.${namespace}.${group}.${name}";
+                    imports = [ component.module ] ++ component.dependencies;
+                    _class = "flake";
+                    _file = "${moduleLocation}#components.${namespace}.${group}.${name}";
+                  })
+                  components
+              )
+              groups
           );
       };
     in
@@ -63,11 +67,11 @@ let
   component = {
     inherit module;
     dependencies = [
-      components.nixology.meta
+      components.nixology.flake.meta
     ];
   };
 in
 {
   imports = [ module ];
-  components.nixology.components = component;
+  components.nixology.flake.components = component;
 }

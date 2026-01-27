@@ -62,11 +62,11 @@ let
   component = {
     inherit module;
     dependencies = [
-      components.nixology.systems
+      components.nixology.flake.systems
     ];
   };
 in
 {
   imports = [ module ];
-  components.nixology.shells = component;
+  components.nixology.flake.shells = component;
 }
