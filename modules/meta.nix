@@ -1,9 +1,11 @@
 { config, ... }:
 let
+  components = config.components;
+
   module = { lib, ... }: {
     # this module is directly imported from the library function mkFlake
     # so it needs to have a static key to facilitate deduplication
-    key = "(import)github:nixology/flake#components.meta";
+    key = "(import)github:nixology/flake#components.nixology.meta";
 
     options = with lib; with types;
       let
@@ -12,33 +14,47 @@ let
           description = "The name of the flake.";
         };
 
-        version = mkOption {
-          type = str;
-          default = "0.1.0";
-          description = "The version of the flake.";
-        };
-
-        meta = mkOption {
-          type = submodule {
-            options = { inherit name version; };
+        meta = mkOption
+          {
+            type = submoduleWith {
+              modules = [
+                {
+                  freeformType = lazyAttrsOf (unique { inherit message; } raw);
+                }
+                {
+                  options = { inherit name; };
+                }
+              ];
+            };
+            inherit description;
           };
-          default = { };
-          description = "Metadata module for flakes.";
-        };
+
+        description = ''
+          Metadata about the flake.
+          Raw attributes. Any attribute can be set here, but some
+          attributes are represented by options, to provide appropriate
+          configuration merging.
+        '';
+
+        message = ''
+          No option has been declared for this attribute, so its definitions can't be merged automatically.
+          Possible solutions:
+            - Load a module that defines this attribute
+            - Declare an option for this attribute
+            - Make sure the attribute is spelled correctly
+            - Define the value only once, with a single definition in a single module
+        '';
       in
       {
-        nixology = { inherit meta; };
+        inherit meta;
       };
   };
 
   component = {
     inherit module;
-    dependencies = [
-      config.nixology.components.nixology
-    ];
   };
 in
 {
   imports = [ module ];
-  nixology.components.meta = component;
+  components.nixology.meta = component;
 }

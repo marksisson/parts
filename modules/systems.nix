@@ -9,5 +9,5 @@ let
   };
 in
 {
-  nixology.components.systems = component;
+  components.nixology.systems = component;
 }

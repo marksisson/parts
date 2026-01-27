@@ -28,5 +28,5 @@ let
   };
 in
 {
-  nixology.components.darwinModules = component;
+  components.nixology.darwinModules = component;
 }

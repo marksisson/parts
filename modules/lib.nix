@@ -1,4 +1,4 @@
-{ inputs, lib ? inputs.nixpkgs.lib, ... }:
+{ inputs, ... }:
 let
   library = {
     mkFlake = flakeArgs@{ name, ... }: flakeModule:
@@ -8,8 +8,8 @@ let
         component = { module = flakeModule; };
       in
       inputs.flake-parts.lib.mkFlake args {
-        imports = [ module { nixology.meta.name = name; } ];
-        #nixology.components.flake = component;
+        imports = [ module { meta.name = name; } ];
+        #components.nixology.flake = component;
       };
 
     modulesIn = directory: with inputs.nixpkgs.lib; let
@@ -27,7 +27,7 @@ let
     {
       # this module is directly accessed from the builtinModule via the component,
       # so it needs to have a static key to facilitate deduplication
-      key = "(import)github:nixology/flake#components.lib.builtinModule";
+      key = "(import)github:nixology/flake#components.nixology.lib.builtinModule";
 
       imports = [
         ./components.nix
@@ -47,7 +47,7 @@ let
   module = { lib, ... }: {
     # this module is directly accessed from the builtinModule via the component,
     # so it needs to have a static key to facilitate deduplication
-    key = "(import)github:nixology/flake#components.lib";
+    key = "(import)github:nixology/flake#components.nixology.lib";
 
     options = with lib; with types; {
       flake.lib = mkOption {
@@ -66,5 +66,5 @@ let
 in
 {
   flake.lib = library;
-  nixology.components.lib = component;
+  components.nixology.lib = component;
 }

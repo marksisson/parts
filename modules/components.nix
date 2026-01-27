@@ -1,15 +1,23 @@
 { config, lib, moduleLocation, ... }:
 let
+  components = config.components;
+  meta = config.meta;
+
   module = { config, ... }: {
     # this module is directly imported from the library function mkFlake
     # so it needs to have a static key to facilitate deduplication
-    key = "(import)github:nixology/flake#components.components";
+    key = "(import)github:nixology/flake#components.nixology.components";
 
     options = with lib; with types; let
       name = mkOption {
         type = str;
         default = name;
         description = "The name of the component.";
+      };
+
+      version = mkOption {
+        type = str;
+        description = "The version of the component.";
       };
 
       module = mkOption {
@@ -20,41 +28,46 @@ let
       dependencies = mkOption {
         type = listOf deferredModule;
         default = [ ];
-        description = "A list of other modules that this component depends on.";
+        description = "A list of other components that this component depends on.";
       };
 
       components = mkOption {
-        type = lazyAttrsOf (submodule ({ name, ... }: {
+        type = lazyAttrsOf (lazyAttrsOf (submodule ({ name, ... }: {
           options = {
-            inherit name module dependencies;
+            inherit name version module dependencies;
           };
-        }));
+        })));
 
         default = { };
 
         description = "A set of reusable components.";
 
-        apply = mapAttrs (componentName: component: {
-          key = "${config.nixology.meta.name}#components.${componentName}";
-          imports = [ component.module ] ++ component.dependencies;
-          _class = "flake";
-          _file = "${moduleLocation}#components.${componentName}";
-        });
+        apply =
+          mapAttrs (namespace: components:
+            mapAttrs
+              (name: component: {
+                key = "${meta.name}#components.${namespace}.${name}";
+                imports = [ component.module ] ++ component.dependencies;
+                _class = "flake";
+                _file = "${moduleLocation}#components.${namespace}.${name}";
+              })
+              components
+          );
       };
     in
     {
-      nixology.components = components;
+      inherit components;
     };
   };
 
   component = {
     inherit module;
     dependencies = [
-      config.nixology.components.meta
+      components.nixology.meta
     ];
   };
 in
 {
   imports = [ module ];
-  nixology.components.components = component;
+  components.nixology.components = component;
 }

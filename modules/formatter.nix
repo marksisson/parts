@@ -1,6 +1,9 @@
 { config, ... }:
 let
-  module = {
+  components = config.components;
+
+  module = { inputs, ... }: {
+    imports = [ inputs.treefmt.flakeModule ];
     perSystem = { config, pkgs, ... }:
       {
         treefmt =
@@ -24,13 +27,12 @@ let
   component = {
     inherit module;
     dependencies = [
-      (with config.partitions.development; extraInputs.treefmt.flakeModule)
-      config.nixology.components.shells
-      config.nixology.components.systems
+      components.nixology.shells
+      components.nixology.systems
     ];
   };
 in
 {
   imports = [ partitionedModule ];
-  nixology.components.formatter = component;
+  components.nixology.formatter = component;
 }

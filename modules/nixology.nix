@@ -2,7 +2,7 @@ let
   module = { lib, ... }: {
     # this module is directly imported from the library function mkFlake
     # so it needs to have a static key to facilitate deduplication
-    key = "(import)github:nixology/flake#components.nixology";
+    key = "(import)github:nixology/flake#components.nixology.nixology";
 
     options = with lib; with types;
       let
@@ -44,5 +44,5 @@ let
 in
 {
   imports = [ module ];
-  nixology.components.nixology = component;
+  components.nixology.nixology = component;
 }

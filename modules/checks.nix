@@ -1,6 +1,9 @@
 { config, ... }:
 let
-  module = {
+  components = config.components;
+
+  module = { inputs, ... }: {
+    imports = [ inputs.git-hooks.flakeModule ];
     perSystem = { config, ... }: {
       shells.default.packages = with config.pre-commit; settings.enabledPackages;
       shells.default.shellHook = "${with config.pre-commit; shellHook}";
@@ -14,13 +17,12 @@ let
   component = {
     inherit module;
     dependencies = [
-      (with config.partitions.development; extraInputs.git-hooks.flakeModule)
-      config.nixology.components.shells
-      config.nixology.components.systems
+      components.nixology.shells
+      components.nixology.systems
     ];
   };
 in
 {
   imports = [ partitionedModule ];
-  nixology.components.checks = component;
+  components.nixology.checks = component;
 }

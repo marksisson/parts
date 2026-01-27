@@ -1,21 +1,22 @@
-{ config, inputs, ... }:
+{ config, ... }:
 let
+  components = config.components;
+
   module = { config, ... }:
     {
       flake.flakeModules =
-        config.nixology.components //
-        { default = { imports = builtins.attrValues config.nixology.components; }; };
+        components.nixology //
+        { default = { imports = builtins.attrValues components.nixology; }; };
     };
 
   component = {
     inherit module;
     dependencies = [
-      inputs.flake-parts.flakeModules.flakeModules
-      config.nixology.components.components
+      components.nixology.flakeModules
+      components.nixology.components
     ];
   };
 in
 {
   imports = [ module ];
-  nixology.components.flakeModules = component;
 }

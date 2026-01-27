@@ -1,5 +1,7 @@
-{ inputs, ... }:
+{ config, ... }:
 let
+  components = config.components;
+
   module = { config, lib, ... }:
     let
       cfg = config;
@@ -217,11 +219,11 @@ let
   component = {
     inherit module;
     dependencies = [
-      inputs.flake-parts.flakeModules.modules
+      components.nixology.modules
     ];
   };
 in
 {
   imports = [ module ];
-  nixology.components.modular = component;
+  components.nixology.modular = component;
 }
