@@ -1,7 +1,5 @@
 { config, ... }:
 let
-  components = config.components;
-
   module = {
     perSystem = { config, lib, pkgs, ... }:
       {
@@ -20,13 +18,13 @@ let
 
   component = {
     inherit module;
-    dependencies = [
-      components.nixology.flake.shells
-      components.nixology.flake.systems
+    dependencies = with config.flake; [
+      components.nixology.parts.shells
+      components.nixology.parts.systems
     ];
   };
 in
 {
   imports = [ partitionedModule ];
-  components.nixology.flake.devShells = component;
+  flake.components.nixology.parts.devShells = component;
 }

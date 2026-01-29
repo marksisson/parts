@@ -1,7 +1,5 @@
 { config, ... }:
 let
-  components = config.components;
-
   module =
     let
       # capture partition inputs from config of outer flake
@@ -22,13 +20,13 @@ let
 
   component = {
     inherit module;
-    dependencies = [
-      components.nixology.flake.shells
-      components.nixology.flake.systems
+    dependencies = with config.flake; [
+      components.nixology.parts.shells
+      components.nixology.parts.systems
     ];
   };
 in
 {
   imports = [ partitionedModule ];
-  components.nixology.flake.checks = component;
+  flake.components.nixology.parts.checks = component;
 }

@@ -1,7 +1,5 @@
 { config, ... }:
 let
-  components = config.components;
-
   module = { lib, ... }: {
     # this module is directly imported from the library function mkFlake
     # so it needs to have a static key to facilitate deduplication
@@ -9,9 +7,9 @@ let
 
     options = with lib; with types;
       let
-        name = mkOption {
+        flakeref = mkOption {
           type = str;
-          description = "The name of the flake.";
+          description = "The flake reference for this flake.";
         };
 
         meta = mkOption
@@ -22,7 +20,7 @@ let
                   freeformType = lazyAttrsOf (unique { inherit message; } raw);
                 }
                 {
-                  options = { inherit name; };
+                  options = { inherit flakeref; };
                 }
               ];
             };
@@ -46,7 +44,7 @@ let
         '';
       in
       {
-        inherit meta;
+        flake = { inherit meta; };
       };
   };
 
@@ -56,5 +54,5 @@ let
 in
 {
   imports = [ module ];
-  components.nixology.flake.meta = component;
+  flake.components.nixology.parts.meta = component;
 }

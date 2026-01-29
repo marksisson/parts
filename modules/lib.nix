@@ -1,14 +1,14 @@
 { inputs, ... }:
 let
   library = {
-    mkFlake = flakeArgs@{ name, ... }: flakeModule:
+    mkFlake = flakeArgs@{ flakeref, ... }: flakeModule:
       let
-        args = builtins.removeAttrs flakeArgs [ "name" ];
+        args = builtins.removeAttrs flakeArgs [ "flakeref" ];
         module = { imports = [ flakeModule builtinModule ]; };
         component = { module = flakeModule; };
       in
       inputs.flake-parts.lib.mkFlake args {
-        imports = [ module { meta.name = name; } ];
+        imports = [ module { flake.meta.flakeref = flakeref; } ];
         #components.nixology.flake.flake = component;
       };
 
@@ -29,10 +29,12 @@ let
       # so it needs to have a static key to facilitate deduplication
       key = "(import)github:nixology/flake#components.nixology.flake.lib.builtinModule";
 
+      /*
       imports = [
         ./components.nix
         ./meta.nix
       ];
+      */
 
       # default systems
       systems = lib.mkDefault (import inputs.systems);
@@ -66,5 +68,5 @@ in
 {
   flake.lib = library; # this is for lib access when imported directly (e.g. in this flake)
   imports = [ module ];
-  components.nixology.flake.lib = component;
+  flake.components.nixology.parts.lib = component;
 }

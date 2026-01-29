@@ -1,5 +1,5 @@
 {
-  description = "A collection of flake modules for various purposes.";
+  description = "A collection of flake components for various purposes.";
 
   inputs = {
     flake-parts.url = "https://flakehub.com/f/hercules-ci/flake-parts/0";
@@ -11,7 +11,7 @@
   };
 
   outputs = inputs:
-    let name = "github:nixology/flake"; in
+    let flakeref = "github:nixology/parts"; in
     with import ./modules/lib.nix { inherit inputs; }; with flake.lib;
-    mkFlake { inherit inputs name; } { debug = true; imports = modulesIn ./modules; };
+    mkFlake { inherit inputs flakeref; } { debug = true; imports = modulesIn ./modules; };
 }

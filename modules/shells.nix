@@ -1,7 +1,5 @@
 { config, ... }:
 let
-  components = config.components;
-
   module = { flake-parts-lib, lib, ... }: {
     options =
       {
@@ -61,12 +59,12 @@ let
 
   component = {
     inherit module;
-    dependencies = [
-      components.nixology.flake.systems
+    dependencies = with config.flake; [
+      components.nixology.parts.systems
     ];
   };
 in
 {
   imports = [ module ];
-  components.nixology.flake.shells = component;
+  flake.components.nixology.parts.shells = component;
 }

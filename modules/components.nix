@@ -1,8 +1,5 @@
 { config, lib, moduleLocation, ... }:
 let
-  components = config.components;
-  meta = config.meta;
-
   module = { config, ... }: {
     # this module is directly imported from the library function mkFlake
     # so it needs to have a static key to facilitate deduplication
@@ -43,35 +40,35 @@ let
         description = "A set of reusable components.";
 
         apply =
-          mapAttrs (namespace: groups:
+          mapAttrs (domain: subdomains:
             mapAttrs
-              (group: components:
+              (subdomain: components:
                 mapAttrs
                   (name: component: {
-                    key = "${meta.name}#components.${namespace}.${group}.${name}";
+                    key = "${config.flake.meta.flakeref}#components.${domain}.${subdomain}.${name}";
                     imports = [ component.module ] ++ component.dependencies;
                     _class = "flake";
-                    _file = "${moduleLocation}#components.${namespace}.${group}.${name}";
+                    _file = "${moduleLocation}#components.${domain}.${subdomain}.${name}";
                   })
                   components
               )
-              groups
+              subdomains
           );
       };
     in
     {
-      inherit components;
+      flake = { inherit components; };
     };
   };
 
   component = {
     inherit module;
-    dependencies = [
-      components.nixology.flake.meta
+    dependencies = with config.flake; [
+      components.nixology.parts.meta
     ];
   };
 in
 {
   imports = [ module ];
-  components.nixology.flake.components = component;
+  flake.components.nixology.parts.components = component;
 }

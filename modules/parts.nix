@@ -17,14 +17,13 @@ let
 in
 {
   imports = [
-    flakeModulesModule
     modulesModule
     partitionsModule
   ];
 
-  components.nixology.parts.bundlers = bundlersComponent;
-  components.nixology.parts.easyOverlay = easyOverlayComponent;
-  components.nixology.parts.flakeModules = flakeModulesComponent;
-  components.nixology.parts.modules = modulesComponent;
-  components.nixology.parts.partitions = partitionsComponent;
+  flake.components.nixology.parts.bundlers = bundlersComponent;
+  flake.components.nixology.parts.easyOverlay = easyOverlayComponent;
+  flake.components.nixology.parts.flakeModules = flakeModulesComponent;
+  flake.components.nixology.parts.modules = modulesComponent;
+  flake.components.nixology.parts.partitions = partitionsComponent;
 }

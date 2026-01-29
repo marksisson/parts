@@ -9,5 +9,5 @@ let
   };
 in
 {
-  components.nixology.flake.systems = component;
+  flake.components.nixology.parts.systems = component;
 }
