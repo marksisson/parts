@@ -1,10 +1,6 @@
 { config, ... }:
 let
   module = { lib, ... }: {
-    # this module is directly imported from the library function mkFlake
-    # so it needs to have a static key to facilitate deduplication
-    key = "(import)github:nixology/flake#components.nixology.flake.meta";
-
     options = with lib; with types;
       let
         flakeref = mkOption {

@@ -5,11 +5,9 @@ let
       let
         args = builtins.removeAttrs flakeArgs [ "flakeref" ];
         module = { imports = [ flakeModule builtinModule ]; };
-        component = { module = flakeModule; };
       in
       inputs.flake-parts.lib.mkFlake args {
         imports = [ module { flake.meta.flakeref = flakeref; } ];
-        #components.nixology.flake.flake = component;
       };
 
     modulesIn = directory: with inputs.nixpkgs.lib; let
@@ -25,17 +23,6 @@ let
 
   builtinModule = { lib, ... }:
     {
-      # this module is directly accessed from the builtinModule via the component,
-      # so it needs to have a static key to facilitate deduplication
-      key = "(import)github:nixology/flake#components.nixology.flake.lib.builtinModule";
-
-      /*
-      imports = [
-        ./components.nix
-        ./meta.nix
-      ];
-      */
-
       # default systems
       systems = lib.mkDefault (import inputs.systems);
 
@@ -46,10 +33,6 @@ let
     };
 
   module = { lib, ... }: {
-    # this module is directly accessed from the builtinModule via the component,
-    # so it needs to have a static key to facilitate deduplication
-    key = "(import)github:nixology/flake#components.nixology.flake.lib";
-
     options = with lib; with types; {
       flake.lib = mkOption {
         type = attrsOf (functionTo anything);
