@@ -10,12 +10,12 @@
 
     # dev tools
     git-hooks = {
-      url = "https://flakehub.com/f/cachix/git-hooks.nix/0";
+      url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "main/nixpkgs";
     };
 
     treefmt = {
-      url = "https://flakehub.com/f/numtide/treefmt-nix/0";
+      url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "main/nixpkgs";
     };
   };

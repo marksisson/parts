@@ -1,10 +1,25 @@
-{ config, ... }:
+{ inputs, ... }:
 let
   module = { flake-parts-lib, lib, ... }: {
     options =
       {
         perSystem = flake-parts-lib.mkPerSystemOption ({ pkgs, ... }: with lib; with types;
           let
+            shells = mkOption {
+              type = lazyAttrsOf (submodule ({ name, ... }: {
+                options = {
+                  name = mkOption {
+                    type = str;
+                    default = name;
+                    description = "Name of the development shell.";
+                  };
+                  inherit inputsFrom mkShellOverrides packages shellHook stdenv;
+                };
+              }));
+              default = { };
+              description = "Development shell configurations.";
+            };
+
             inputsFrom = mkOption {
               type = listOf package;
               default = [ ];
@@ -35,21 +50,6 @@ let
               default = pkgs.stdenv;
               description = "The stdenv to use for the development shell.";
             };
-
-            shells = mkOption {
-              type = lazyAttrsOf (submodule ({ name, ... }: {
-                options = {
-                  name = mkOption {
-                    type = str;
-                    default = name;
-                    description = "Name of the development shell.";
-                  };
-                  inherit inputsFrom mkShellOverrides packages shellHook stdenv;
-                };
-              }));
-              default = { };
-              description = "Development shell configurations.";
-            };
           in
           {
             options = { inherit shells; };
@@ -59,7 +59,7 @@ let
 
   component = {
     inherit module;
-    dependencies = with config.flake; [
+    dependencies = with inputs.self; [
       components.nixology.parts.systems
     ];
   };

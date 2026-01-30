@@ -1,13 +1,7 @@
-{ config, ... }:
 let
   module = { lib, ... }: {
     options = with lib; with types;
       let
-        flakeref = mkOption {
-          type = str;
-          description = "The flake reference for this flake.";
-        };
-
         meta = mkOption
           {
             type = submoduleWith {
@@ -38,6 +32,11 @@ let
             - Make sure the attribute is spelled correctly
             - Define the value only once, with a single definition in a single module
         '';
+
+        flakeref = mkOption {
+          type = str;
+          description = "The flake reference for this flake.";
+        };
       in
       {
         flake = { inherit meta; };
