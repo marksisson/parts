@@ -48,6 +48,27 @@
         "type": "github"
       }
     },
+    "nixpkgs-unfree": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1770820639,
+        "narHash": "sha256-a/rAybdyyI+41gS0bmb0X1caiaxVghsOoatMO2yo5NU=",
+        "owner": "numtide",
+        "repo": "nixpkgs-unfree",
+        "rev": "b8495f06315a63bf2a11158f248d9a1736f3659f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs-unfree",
+        "type": "github"
+      }
+    },
     "nixpkgs-unstable": {
       "locked": {
         "lastModified": 1770015011,
@@ -68,6 +89,7 @@
       "inputs": {
         "flake-parts": "flake-parts",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-unfree": "nixpkgs-unfree",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "systems": "systems",
         "systems-darwin": "systems-darwin",
