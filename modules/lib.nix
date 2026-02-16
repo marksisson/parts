@@ -11,5 +11,6 @@ let
   };
 in
 {
-  flake.components.nixology.environments.lib = component;
+  imports = [ module ];
+  flake.components.nixology.parts.lib = component;
 }
