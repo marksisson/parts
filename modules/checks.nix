@@ -22,8 +22,9 @@ let
     inherit module;
     dependencies = with inputs.self; [
       components.nixology.parts.shells
-      components.nixology.parts.systems
-    ];
+    ] ++ (with inputs.std; [
+      components.nixology.std.systems
+    ]);
   };
 in
 {
