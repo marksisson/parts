@@ -1,7 +1,7 @@
 { inputs, ... }:
 let
   # define components for flake-parts modules
-  parts = with inputs.flake-parts; {
+  parts = with inputs.std.inputs.flake-parts; {
     bundlers = { module = flakeModules.bundlers; };
     easyOverlay = { module = flakeModules.easyOverlay; };
     flakeModules = { module = flakeModules.flakeModules; };
