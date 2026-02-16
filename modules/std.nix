@@ -3,4 +3,6 @@
     components.nixology.std.components
     components.nixology.std.meta
   ];
+
+  flake.components = inputs.std.components;
 }
