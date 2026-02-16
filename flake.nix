@@ -5,5 +5,5 @@
 
   outputs = inputs:
     let flakeref = "github:nixology/parts"; in with inputs.std.lib;
-    mkFlake { inherit flakeref inputs; } { debug = true; imports = modulesIn ./modules; };
+    mkFlake { inherit flakeref inputs; } { imports = modulesIn ./modules; };
 }

@@ -5,18 +5,16 @@
   outputs = { ... }: { };
 
   inputs = {
-    # used for locking and following dependencies; do not access from parent flake
-    main.url = "path:../..";
+    std-default.url = "git+ssh://git@github.com/marksisson/std?dir=partitions/default";
 
-    # dev tools
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
-      inputs.nixpkgs.follows = "main/nixpkgs";
+      inputs.nixpkgs.follows = "std-default/nixpkgs";
     };
 
     treefmt = {
       url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "main/nixpkgs";
+      inputs.nixpkgs.follows = "std-default/nixpkgs";
     };
   };
 }
