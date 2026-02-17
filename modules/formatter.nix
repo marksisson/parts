@@ -1,13 +1,10 @@
 { config, inputs, ... }:
 let
+  development = config.partitions.development.extraInputs;
+
   module =
-    let
-      # capture partition inputs from config of outer flake
-      # so that is is part of the component
-      inputs = config.partitions.development.extraInputs;
-    in
     {
-      imports = [ inputs.treefmt.flakeModule ];
+      imports = [ development.treefmt.flakeModule ];
       perSystem = { config, pkgs, ... }:
         {
           treefmt =
@@ -32,9 +29,8 @@ let
     inherit module;
     dependencies = with inputs.self; [
       components.nixology.parts.shells
-    ] ++ (with inputs.std; [
-      components.nixology.std.systems
-    ]);
+      components.nixology.systems.default
+    ];
   };
 in
 {

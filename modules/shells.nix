@@ -59,8 +59,8 @@ let
 
   component = {
     inherit module;
-    dependencies = with inputs.std; [
-      components.nixology.std.systems
+    dependencies = with inputs.self; [
+      components.nixology.systems.default
     ];
   };
 in

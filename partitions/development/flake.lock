@@ -21,7 +21,7 @@
         "flake-compat": "flake-compat",
         "gitignore": "gitignore",
         "nixpkgs": [
-          "std-default",
+          "pkgs",
           "nixpkgs"
         ]
       },
@@ -62,138 +62,51 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1771249073,
-        "narHash": "sha256-GhIQIpYrdUP7y3+DhEgpPBxe6rDpAT5gp8Oqd6+ze9U=",
+        "lastModified": 1771207753,
+        "narHash": "sha256-b9uG8yN50DRQ6A7JdZBfzq718ryYrlmGgqkRm9OOwCE=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "fe8c935d2f946e26d11082a52f1ce21d7add51f6",
+        "rev": "d1c15b7d5806069da59e819999d70e1cec0760bf",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
+        "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
     },
-    "nixpkgs-unfree": {
+    "pkgs": {
       "inputs": {
-        "nixpkgs": [
-          "std-default",
-          "nixpkgs-unstable"
-        ]
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1770906843,
-        "narHash": "sha256-1xeZ12fx51bowURLXIcPi6kol4oOUw5/VkOfv90w9Eg=",
-        "owner": "numtide",
-        "repo": "nixpkgs-unfree",
-        "rev": "518326fa11b97ed86016b152c30dfbdbd6b89f8a",
-        "type": "github"
+        "dir": "partitions/nixpkgs/unstable",
+        "lastModified": 1771785536,
+        "narHash": "sha256-PLynd+axrOZik7aBECFCkoBKk79rqPE9e1mRhx6U92Y=",
+        "ref": "refs/heads/main",
+        "rev": "298f175b1971d72f6b2ab167ea1347d31efc0912",
+        "revCount": 30,
+        "type": "git",
+        "url": "ssh://git@github.com/marksisson/std"
       },
       "original": {
-        "owner": "numtide",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs-unfree",
-        "type": "github"
-      }
-    },
-    "nixpkgs-unstable": {
-      "locked": {
-        "lastModified": 1771177547,
-        "narHash": "sha256-trTtk3WTOHz7hSw89xIIvahkgoFJYQ0G43IlqprFoMA=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "ac055f38c798b0d87695240c7b761b82fc7e5bc2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
+        "dir": "partitions/nixpkgs/unstable",
+        "type": "git",
+        "url": "ssh://git@github.com/marksisson/std"
       }
     },
     "root": {
       "inputs": {
         "git-hooks": "git-hooks",
-        "std-default": "std-default",
+        "pkgs": "pkgs",
         "treefmt": "treefmt"
-      }
-    },
-    "std-default": {
-      "inputs": {
-        "nixpkgs": "nixpkgs",
-        "nixpkgs-unfree": "nixpkgs-unfree",
-        "nixpkgs-unstable": "nixpkgs-unstable",
-        "systems": "systems",
-        "systems-darwin": "systems-darwin",
-        "systems-linux": "systems-linux"
-      },
-      "locked": {
-        "dir": "partitions/default",
-        "lastModified": 1771287854,
-        "narHash": "sha256-+Qp9GKFB2DAnVlQD1c4TEXEN4jP17As2Uc7RG0RPY0k=",
-        "ref": "refs/heads/main",
-        "rev": "c6c08a0c618c4c5e320c6276ef212852051faa59",
-        "revCount": 22,
-        "type": "git",
-        "url": "ssh://git@github.com/marksisson/std"
-      },
-      "original": {
-        "dir": "partitions/default",
-        "type": "git",
-        "url": "ssh://git@github.com/marksisson/std"
-      }
-    },
-    "systems": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
-    "systems-darwin": {
-      "locked": {
-        "lastModified": 1689347925,
-        "narHash": "sha256-ozenz5bFe1UUqOn7f60HRmgc01BgTGIKZ4Xl+HbocGQ=",
-        "owner": "nix-systems",
-        "repo": "default-darwin",
-        "rev": "2235d7e6cc29ae99878133c95e9fe5e157661ffb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default-darwin",
-        "type": "github"
-      }
-    },
-    "systems-linux": {
-      "locked": {
-        "lastModified": 1689347925,
-        "narHash": "sha256-ozenz5bFe1UUqOn7f60HRmgc01BgTGIKZ4Xl+HbocGQ=",
-        "owner": "nix-systems",
-        "repo": "default-darwin",
-        "rev": "2235d7e6cc29ae99878133c95e9fe5e157661ffb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default-darwin",
-        "type": "github"
       }
     },
     "treefmt": {
       "inputs": {
         "nixpkgs": [
-          "std-default",
+          "pkgs",
           "nixpkgs"
         ]
       },

@@ -43,11 +43,11 @@
         "flake-parts": "flake-parts"
       },
       "locked": {
-        "lastModified": 1771287854,
-        "narHash": "sha256-+Qp9GKFB2DAnVlQD1c4TEXEN4jP17As2Uc7RG0RPY0k=",
+        "lastModified": 1771785536,
+        "narHash": "sha256-PLynd+axrOZik7aBECFCkoBKk79rqPE9e1mRhx6U92Y=",
         "ref": "refs/heads/main",
-        "rev": "c6c08a0c618c4c5e320c6276ef212852051faa59",
-        "revCount": 22,
+        "rev": "298f175b1971d72f6b2ab167ea1347d31efc0912",
+        "revCount": 30,
         "type": "git",
         "url": "ssh://git@github.com/marksisson/std"
       },

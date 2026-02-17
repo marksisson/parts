@@ -1,13 +1,10 @@
 { config, inputs, ... }:
 let
+  development = config.partitions.development.extraInputs;
+
   module =
-    let
-      # capture partition inputs from config of outer flake
-      # so that is is part of the component
-      inputs = config.partitions.development.extraInputs;
-    in
     {
-      imports = [ inputs.git-hooks.flakeModule ];
+      imports = [ development.git-hooks.flakeModule ];
       perSystem = { config, ... }: {
         shells.default.packages = with config.pre-commit; settings.enabledPackages;
         shells.default.shellHook = "${with config.pre-commit; shellHook}";
@@ -22,9 +19,8 @@ let
     inherit module;
     dependencies = with inputs.self; [
       components.nixology.parts.shells
-    ] ++ (with inputs.std; [
-      components.nixology.std.systems
-    ]);
+      components.nixology.systems.default
+    ];
   };
 in
 {

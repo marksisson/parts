@@ -5,16 +5,16 @@
   outputs = { ... }: { };
 
   inputs = {
-    std-default.url = "git+ssh://git@github.com/marksisson/std?dir=partitions/default";
+    pkgs.url = "git+ssh://git@github.com/marksisson/std?dir=partitions/nixpkgs/unstable";
 
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
-      inputs.nixpkgs.follows = "std-default/nixpkgs";
+      inputs.nixpkgs.follows = "pkgs/nixpkgs";
     };
 
     treefmt = {
       url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "std-default/nixpkgs";
+      inputs.nixpkgs.follows = "pkgs/nixpkgs";
     };
   };
 }
