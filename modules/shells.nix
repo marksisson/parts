@@ -59,7 +59,7 @@ let
 
   component = {
     inherit module;
-    dependencies = with inputs.std; [
+    dependencies = with inputs.self; [
       components.nixology.std.systems
     ];
   };

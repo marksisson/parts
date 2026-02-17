@@ -1,12 +1,5 @@
 { inputs, ... }:
 let
-  module = inputs.std.components.nixology.std.lib;
-
-  component = {
-    inherit module;
-  };
+  module = with inputs.std; components.nixology.std.lib;
 in
-{
-  imports = [ module ];
-  flake.components.nixology.parts.lib = component;
-}
+module
