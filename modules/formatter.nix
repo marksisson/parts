@@ -14,6 +14,9 @@ let
               programs = {
                 nixpkgs-fmt.enable = true;
                 shfmt.enable = true;
+                deadnix.enable = true;
+                keep-sorted.enable = true;
+                nixf-diagnose.enable = true;
               };
             };
 

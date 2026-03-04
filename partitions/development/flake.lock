@@ -26,11 +26,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1770726378,
-        "narHash": "sha256-kck+vIbGOaM/dHea7aTBxdFYpeUl/jHOy5W3eyRvVx8=",
+        "lastModified": 1772665116,
+        "narHash": "sha256-XmjUDG/J8Z8lY5DVNVUf5aoZGc400FxcjsNCqHKiKtc=",
         "owner": "cachix",
         "repo": "git-hooks.nix",
-        "rev": "5eaaedde414f6eb1aea8b8525c466dc37bba95ae",
+        "rev": "39f53203a8458c330f61cc0759fe243f0ac0d198",
         "type": "github"
       },
       "original": {
@@ -81,17 +81,17 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "dir": "partitions/nixpkgs/unstable",
-        "lastModified": 1771785536,
-        "narHash": "sha256-PLynd+axrOZik7aBECFCkoBKk79rqPE9e1mRhx6U92Y=",
+        "dir": "partitions/pkgs/unstable",
+        "lastModified": 1772811284,
+        "narHash": "sha256-z5nuSQavRU/DfOwO28MDXBrGHn0wcYtJ+ZMlKru0xXk=",
         "ref": "refs/heads/main",
-        "rev": "298f175b1971d72f6b2ab167ea1347d31efc0912",
-        "revCount": 30,
+        "rev": "fefbdfd3a07f958e4e15120c6873df8ae6819099",
+        "revCount": 32,
         "type": "git",
         "url": "ssh://git@github.com/marksisson/std"
       },
       "original": {
-        "dir": "partitions/nixpkgs/unstable",
+        "dir": "partitions/pkgs/unstable",
         "type": "git",
         "url": "ssh://git@github.com/marksisson/std"
       }
@@ -111,11 +111,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1770228511,
-        "narHash": "sha256-wQ6NJSuFqAEmIg2VMnLdCnUc0b7vslUohqqGGD+Fyxk=",
+        "lastModified": 1772660329,
+        "narHash": "sha256-IjU1FxYqm+VDe5qIOxoW+pISBlGvVApRjiw/Y/ttJzY=",
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "rev": "337a4fe074be1042a35086f15481d763b8ddc0e7",
+        "rev": "3710e0e1218041bbad640352a0440114b1e10428",
         "type": "github"
       },
       "original": {

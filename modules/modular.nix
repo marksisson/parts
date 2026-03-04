@@ -39,17 +39,6 @@ let
       # TODO: usually there is only one, but there can be more than one
 
       # Transposes the 'component' attribute of a flake-parts module
-      import = flake-parts-module:
-        let
-          transposed = transpose flake-parts-module.mod.component;
-        in
-        if transposed ? flake then
-          let
-            name = builtins.head (builtins.attrNames transposed.flake);
-          in
-          flake-parts-module // { imports = [ transposed.flake.${name} ]; }
-        else
-          flake-parts-module;
     in
     {
       options.mod =
@@ -73,7 +62,7 @@ let
             ];
           };
 
-          evaluator = with lib.types; submodule ({ config, name, ... }: {
+          evaluator = with lib.types; submodule ({ ... }: {
             options = {
               evaluator = lib.mkOption {
                 type = functionTo attrs;

@@ -7,7 +7,7 @@
   flake.components = with lib;
     # convert modules to components
     mapAttrs
-      (domain: mapAttrs (subdomain: mapAttrs (_: module:
+      (_: mapAttrs (_: mapAttrs (_: module:
         let
           component = {
             inherit module;
