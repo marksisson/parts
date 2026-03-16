@@ -1,7 +1,7 @@
 { inputs, ... }:
 let
   module = with inputs.std.inputs.flake-parts.flakeModules; {
-    imports = [ partitions ];
+    imports = [ easyOverlay ];
   };
 
   component = {
@@ -10,11 +10,10 @@ let
       nixology.std.schemas
     ];
     meta = {
-      shortDescription = "module for partition management";
+      shortDescription = "module for easy overlay management";
     };
   };
 in
 {
-  imports = [ module ];
-  flake.components = { nixology.parts.partitions = component; };
+  flake.components = { nixology.parts.easyOverlay = component; };
 }

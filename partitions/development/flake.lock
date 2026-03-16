@@ -63,17 +63,14 @@
     "nixpkgs": {
       "locked": {
         "lastModified": 1773201692,
-        "narHash": "sha256-NXrKzNMniu4Oam2kAFvqJ3GB2kAvlAFIriTAheaY8hw=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
+        "narHash": "sha256-xtsQYO6twTbzxKIvTZcLgZeAkbL5RAcNnJboSjf+E78=",
         "rev": "b6067cc0127d4db9c26c79e4de0513e58d0c40c9",
-        "type": "github"
+        "type": "tarball",
+        "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.05pre961687.b6067cc0127d/nixexprs.tar.xz"
       },
       "original": {
-        "owner": "nixos",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
+        "type": "tarball",
+        "url": "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz"
       }
     },
     "pkgs": {
@@ -81,17 +78,17 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "dir": "partitions/pkgs/unstable",
-        "lastModified": 1773346255,
-        "narHash": "sha256-Vft4smLs4Z0Tt1+0d5/WG1CbkitePKKDN/EBUfjKviY=",
+        "dir": "partitions/channels/unstable",
+        "lastModified": 1773717415,
+        "narHash": "sha256-nADE2ResSjPQYbimNqUvckHwkQ8+taRAlQdF/v6ghsY=",
         "ref": "refs/heads/main",
-        "rev": "cd915b2ab91e5d6dd401a636ff69306b4c687919",
-        "revCount": 34,
+        "rev": "4ca9883d43427e907db0e0ec2c0c7b1da0f0df59",
+        "revCount": 37,
         "type": "git",
         "url": "ssh://git@github.com/marksisson/std"
       },
       "original": {
-        "dir": "partitions/pkgs/unstable",
+        "dir": "partitions/channels/unstable",
         "type": "git",
         "url": "ssh://git@github.com/marksisson/std"
       }

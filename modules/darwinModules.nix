@@ -1,20 +1,19 @@
-{ moduleLocation, ... }:
+{ config, moduleLocation, ... }:
 let
+  flake-schemas = config.partitions.schemas.extraInputs.flake-schemas;
+
   module = { lib, ... }: {
     options = with lib; with types;
       {
         flake.darwinModules = mkOption
           {
             type = lazyAttrsOf deferredModule;
-
             default = { };
-
             apply = mapAttrs (name: module: {
               _class = "darwin";
               _file = "${toString moduleLocation}#darwinModules.${name}";
               imports = [ module ];
             });
-
             description = ''
               Darwin modules.
 
@@ -22,10 +21,17 @@ let
             '';
           };
       };
+
+    config = {
+      flake.schemas = { inherit (flake-schemas.schemas) darwinModules; };
+    };
   };
 
   component = {
     inherit module;
+    meta = {
+      shortDescription = "darwin modules";
+    };
   };
 in
 {
