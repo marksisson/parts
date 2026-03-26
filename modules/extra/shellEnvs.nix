@@ -9,13 +9,13 @@ let
           with lib;
           with types;
           let
-            shells = mkOption {
-              type = lazyAttrsOf shell;
+            shellEnvs = mkOption {
+              type = lazyAttrsOf shellEnv;
               default = { };
-              description = "Development shell configurations.";
+              description = "Development shell environments.";
             };
 
-            shell = submodule {
+            shellEnv = submodule {
               options = {
                 inherit
                   inputsFrom
@@ -30,35 +30,35 @@ let
             inputsFrom = mkOption {
               type = listOf package;
               default = [ ];
-              description = "List of packages whose inputs and shell hooks will be included in the development shell.";
+              description = "List of packages whose inputs and shell hooks will be included in the development shell environment.";
             };
 
             mkShellOverrides = mkOption {
               type = lazyAttrsOf anything;
               default = { };
-              description = "Overrides to apply to the development shell.";
+              description = "Overrides to apply to the development shell environment.";
             };
 
             packages = mkOption {
               type = listOf package;
               default = [ ];
-              description = "List of packages to include in development shell.";
+              description = "List of packages to include in development shell environment.";
             };
 
             shellHook = mkOption {
               type = lines;
               default = "";
-              description = "Shell hook script to run when entering the development shell.";
+              description = "Shell hook script to run when entering the development shell environment.";
             };
 
             stdenv = mkOption {
               type = package;
               default = pkgs.stdenvNoCC;
-              description = "The stdenv to use for the development shell.";
+              description = "The stdenv to use for the development shell environment.";
             };
           in
           {
-            options = { inherit shells; };
+            options = { inherit shellEnvs; };
           }
         );
       };
@@ -71,19 +71,19 @@ let
             pkgs,
             ...
           }:
-          lib.mkIf (config.shells != { }) {
+          lib.mkIf (config.shellEnvs != { }) {
             devShells = lib.mapAttrs (
-              name: shell:
-              pkgs.mkShell.override shell.mkShellOverrides {
+              name: shellEnv:
+              pkgs.mkShell.override shellEnv.mkShellOverrides {
                 inherit name;
-                inherit (shell)
+                inherit (shellEnv)
                   inputsFrom
                   packages
                   shellHook
                   stdenv
                   ;
               }
-            ) config.shells;
+            ) config.shellEnvs;
           };
       };
     };
@@ -99,13 +99,13 @@ let
       nixology.flake.devShells
     ];
     meta = {
-      shortDescription = "development shell configurations";
+      shortDescription = "development shell environments";
     };
   };
 in
 {
   imports = [ partitionedModule ];
   flake.components = {
-    nixology.extra.shells = component;
+    nixology.extra.shellEnvs = component;
   };
 }
