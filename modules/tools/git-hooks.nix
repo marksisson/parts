@@ -1,6 +1,6 @@
 { config, inputs, ... }:
 let
-  git-hooks = config.partitions.development.extraInputs.git-hooks;
+  inherit (config.partitions.development.extraInputs) git-hooks;
 
   module = {
     imports = [ git-hooks.flakeModule ];

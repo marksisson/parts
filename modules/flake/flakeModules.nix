@@ -1,7 +1,7 @@
 { inputs, ... }:
 let
-  module = with inputs.core.inputs.flake-parts.flakeModules; {
-    imports = [ flakeModules ];
+  module = {
+    imports = with inputs.core.inputs.flake-parts.flakeModules; [ flakeModules ];
     config = {
       flake.schemas.flakeModules = schema;
     };

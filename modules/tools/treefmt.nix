@@ -1,6 +1,6 @@
 { config, inputs, ... }:
 let
-  treefmt = config.partitions.development.extraInputs.treefmt;
+  inherit (config.partitions.development.extraInputs) treefmt;
 
   module = {
     imports = [ treefmt.flakeModule ];

@@ -1,10 +1,6 @@
-{
-  config,
-  inputs,
-  ...
-}:
+{ config, inputs, ... }:
 let
-  flake-schemas = config.partitions.schemas.extraInputs.flake-schemas;
+  inherit (config.partitions.schemas.extraInputs) flake-schemas;
 
   moduleLocation = "${inputs.self.outPath}/flake.nix";
 
